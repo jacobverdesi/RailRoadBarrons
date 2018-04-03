@@ -1,0 +1,11 @@
+0 5 11 Station (5,11)
+1 5 16 Station (5,16)
+2 8 16 Penn Station
+3 8 5 Station (8,5)
+4 8 11 MiddleTown
+##ROUTES##
+0 1 UNCLAIMED
+1 2 UNCLAIMED
+3 4 UNCLAIMED
+0 4 UNCLAIMED
+4 2 UNCLAIMED
