@@ -1,13 +1,20 @@
 package student;
 
-import model.RailroadMap;
-import model.RailroadMapObserver;
-import model.Route;
-import model.Space;
+import model.*;
 
 import java.util.Collection;
+import java.util.List;
 
 public class RailroadMapModel implements RailroadMap {
+
+    private List<Space> spaces;
+    private List<Station> stations;
+    private List<Track> tracks;
+    private List<Route> routes;
+
+    public RailroadMapModel(){
+
+    }
 
     @Override
     public void addObserver(RailroadMapObserver observer) {
