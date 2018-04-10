@@ -4,37 +4,51 @@ import model.*;
 
 public class TrackModel implements Track {
 
-    public TrackModel(){
+    private Baron baron;
+    private Orientation ort;
+    private Route route;
+    private int row, col;
 
+    public TrackModel(Baron baron, Orientation ort, int row,
+                      int col, Route route){
+        this.baron = baron;
+        this.ort = ort;
+        this.route = route;
+        this.row = row;
+        this.col = col;
     }
 
     @Override
     public Baron getBaron() {
-        return null;
+        return baron;
     }
 
     @Override
     public Orientation getOrientation() {
-        return null;
+        return ort;
     }
 
     @Override
     public Route getRoute() {
-        return null;
+        return route;
     }
 
     @Override
     public int getCol() {
-        return 0;
+        return col;
     }
 
     @Override
     public int getRow() {
-        return 0;
+        return row;
     }
 
     @Override
     public boolean collocated(Space other) {
+        if (other.getCol() == this.col && other.getRow() == this.row){
+            return true;
+        }
         return false;
     }
+
 }
