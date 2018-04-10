@@ -1,3 +1,0 @@
-All of your code must be created here.
-
-Delete this file after crating your first class in this package.
