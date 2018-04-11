@@ -88,12 +88,56 @@ public class MyPlayer implements Player {
 
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
-        //TODO : add conditions
+        Card first = pair.getFirstCard();
+        Card second = pair.getSecondCard();
+        ArrayList<Card> firstMatches = new ArrayList<>();
+        ArrayList<Card> secondMatches = new ArrayList<>();
+        ArrayList<Card> wilds = new ArrayList<>();
+        for (Card c : hand) {
+            if (c.equals(first)) {
+                firstMatches.add(c);
+            } else if (c.equals(second)) {
+                secondMatches.add(c);
+            } else if (c.equals(Card.WILD)) {
+                wilds.add(c);
+            }
+        }
 
-        claimedTurn = true;
-        route.claim(baron);
-        routes.add(route);
-        score += route.getPointValue();
+        if (firstMatches.size() < secondMatches.size()) {
+            if (firstMatches.size() < route.getLength() && wilds.size() > 0) {
+                for (Card h : hand) {
+                    if (h.equals(Card.WILD)) {
+                        hand.remove(h);
+                    }
+                }
+            }
+            for (Card c : firstMatches) {
+                for (Card h : hand) {
+                    if (c.equals(h)) {
+                        hand.remove(h);
+                    }
+                }
+            }
+        } else {
+            if (secondMatches.size() < route.getLength() && wilds.size() > 0) {
+                for (Card h : hand) {
+                    if (h.equals(Card.WILD)) {
+                        hand.remove(h);
+                    }
+                }
+                for (Card c : secondMatches) {
+                    for (Card h : hand) {
+                        if (c.equals(h)) {
+                            hand.remove(h);
+                        }
+                    }
+                }
+            }
+            claimedTurn = true;
+            route.claim(baron);
+            routes.add(route);
+            score += route.getPointValue();
+        }
     }
 
     @Override
