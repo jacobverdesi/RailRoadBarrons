@@ -12,8 +12,15 @@ public class RailroadMapModel implements RailroadMap {
     private List<Track> tracks;
     private List<Route> routes;
 
-    public RailroadMapModel(){
+    public RailroadMapModel(List<Route> routes, List<Station> stations,
+                            List<Space> spaces){
+        this.routes = routes;
+        this.stations = stations;
+        this.spaces = spaces;
 
+        for (Route r : routes){
+            tracks.addAll(r.getTracks());
+        }
     }
 
     @Override
@@ -23,7 +30,13 @@ public class RailroadMapModel implements RailroadMap {
 
     @Override
     public int getCols() {
-        return 0;
+        int result = 0;
+        for (Station s : stations){
+            if (s.getCol() > result){
+                result = s.getCol();
+            }
+        }
+        return result;
     }
 
     @Override
@@ -56,7 +69,13 @@ public class RailroadMapModel implements RailroadMap {
 
     @Override
     public int getRows() {
-        return 0;
+        int result = 0;
+        for (Station s : stations){
+            if (s.getRow() > result){
+                result = s.getRow();
+            }
+        }
+        return result;
     }
 
     @Override
@@ -76,6 +95,8 @@ public class RailroadMapModel implements RailroadMap {
 
     @Override
     public void routeClaimed(Route route) {
+        for (Track t : route.getTracks()){
 
+        }
     }
 }
