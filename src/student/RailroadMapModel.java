@@ -29,6 +29,7 @@ public class RailroadMapModel implements RailroadMap {
     @Override
     public int getLengthOfShortestUnclaimedRoute() {
         int result = routes.get(0).getLength();
+        //Test
         for (Route r : routes){
             if (r.getLength() < result){
                 result = r.getLength();
