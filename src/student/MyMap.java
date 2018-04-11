@@ -14,15 +14,14 @@ public class MyMap implements RailroadMap {
     private List<Route> routes, claimed;
     private List<RailroadMapObserver> observers;
 
-    public MyMap(List<Route> routes, List<Station> stations,
-                 List<Space> spaces){
+    public MyMap(List<Route> routes, List<Station> stations, List<Space> spaces) {
         this.routes = routes;
         this.claimed = new ArrayList<>();
         this.stations = stations;
         this.spaces = spaces;
         observers = new ArrayList<>();
 
-        for (Route r : routes){
+        for (Route r : routes) {
             tracks.addAll(r.getTracks());
         }
     }
@@ -40,8 +39,8 @@ public class MyMap implements RailroadMap {
     @Override
     public int getCols() {
         int result = 0;
-        for (Station s : stations){
-            if (s.getCol() > result){
+        for (Station s : stations) {
+            if (s.getCol() > result) {
                 result = s.getCol();
             }
         }
@@ -51,8 +50,8 @@ public class MyMap implements RailroadMap {
     @Override
     public int getLengthOfShortestUnclaimedRoute() {
         int result = routes.get(0).getLength();
-        for (Route r : routes){
-            if (r.getLength() < result){
+        for (Route r : routes) {
+            if (r.getLength() < result) {
                 result = r.getLength();
             }
         }
@@ -61,9 +60,9 @@ public class MyMap implements RailroadMap {
 
     @Override
     public Route getRoute(int row, int col) {
-        for (Route r : routes){
-            for (Track t : r.getTracks()){
-                if (t.getRow() == row && t.getCol() == col){
+        for (Route r : routes) {
+            for (Track t : r.getTracks()) {
+                if (t.getRow() == row && t.getCol() == col) {
                     return r;
                 }
             }
@@ -79,8 +78,8 @@ public class MyMap implements RailroadMap {
     @Override
     public int getRows() {
         int result = 0;
-        for (Station s : stations){
-            if (s.getRow() > result){
+        for (Station s : stations) {
+            if (s.getRow() > result) {
                 result = s.getRow();
             }
         }
@@ -89,8 +88,8 @@ public class MyMap implements RailroadMap {
 
     @Override
     public Space getSpace(int row, int col) {
-        for (Space s : spaces){
-            if (s.getRow() == row && s.getCol() == col){
+        for (Space s : spaces) {
+            if (s.getRow() == row && s.getCol() == col) {
                 return s;
             }
         }
