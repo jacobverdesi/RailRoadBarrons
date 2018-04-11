@@ -2,6 +2,7 @@ package student;
 
 import model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyRoute implements Route{
@@ -10,11 +11,20 @@ public class MyRoute implements Route{
     private Baron baron;
     private Station origin, dest;
 
-    public MyRoute(List<Track> tracks, Station origin, Station dest){
-        this.tracks = tracks;
+    public MyRoute(Station origin, Station dest, Orientation ort){
         this.origin = origin;
         this.dest = dest;
         this.baron = null;
+        tracks = new ArrayList<>();
+        if (ort.equals(Orientation.HORIZONTAL)){
+            for (int i = origin.getCol(); i <= dest.getCol(); i++){
+                tracks.add(new MyTrack(ort, origin.getRow(), i, this));
+            }
+        }else {
+            for (int i = origin.getRow(); i <= dest.getRow(); i++){
+                tracks.add(new MyTrack(ort, i, origin.getCol(), this));
+            }
+        }
     }
 
     @Override
