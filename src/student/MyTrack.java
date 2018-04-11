@@ -2,15 +2,15 @@ package student;
 
 import model.*;
 
-public class TrackModel implements Track {
+public class MyTrack implements Track {
 
     private Baron baron;
     private Orientation ort;
     private Route route;
     private int row, col;
 
-    public TrackModel(Baron baron, Orientation ort, int row,
-                      int col, Route route){
+    public MyTrack(Baron baron, Orientation ort, int row,
+                   int col, Route route){
         this.baron = baron;
         this.ort = ort;
         this.route = route;

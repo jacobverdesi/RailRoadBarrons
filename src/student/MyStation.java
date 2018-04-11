@@ -1,24 +1,32 @@
 package student;
 
 import model.Space;
+import model.Station;
 
-public class SpaceModel implements Space{
+public class MyStation implements Station{
 
     private int row, col;
+    private String name;
 
-    public SpaceModel(int row, int col){
+    public MyStation(String name, int row, int col){
         this.row = row;
         this.col = col;
+        this.name = name;
     }
 
     @Override
-    public int getCol() {
-        return col;
+    public String getName() {
+        return name;
     }
 
     @Override
     public int getRow() {
         return row;
+    }
+
+    @Override
+    public int getCol() {
+        return col;
     }
 
     @Override

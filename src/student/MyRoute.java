@@ -4,13 +4,13 @@ import model.*;
 
 import java.util.List;
 
-public class RouteModel implements Route{
+public class MyRoute implements Route{
 
     private List<Track> tracks;
     private Baron baron;
     private Station origin, dest;
 
-    public RouteModel(List<Track> tracks, Station origin, Station dest){
+    public MyRoute(List<Track> tracks, Station origin, Station dest){
         this.tracks = tracks;
         this.origin = origin;
         this.dest = dest;

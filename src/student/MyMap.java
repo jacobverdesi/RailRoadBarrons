@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class RailroadMapModel implements RailroadMap {
+public class MyMap implements RailroadMap {
 
     private List<Space> spaces;
     private List<Station> stations;
@@ -14,8 +14,8 @@ public class RailroadMapModel implements RailroadMap {
     private List<Route> routes;
     private List<RailroadMapObserver> observers;
 
-    public RailroadMapModel(List<Route> routes, List<Station> stations,
-                            List<Space> spaces){
+    public MyMap(List<Route> routes, List<Station> stations,
+                 List<Space> spaces){
         this.routes = routes;
         this.stations = stations;
         this.spaces = spaces;
