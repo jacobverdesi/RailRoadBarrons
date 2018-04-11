@@ -14,12 +14,17 @@ public class MyRoute implements Route{
         this.tracks = tracks;
         this.origin = origin;
         this.dest = dest;
-        this.baron = this.tracks.get(0).getBaron();
+        this.baron = null;
     }
 
     @Override
     public boolean claim(Baron claimant) {
-        return claimant.equals(baron);
+        if (this.baron == null){
+            this.baron = claimant;
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
