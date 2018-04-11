@@ -12,8 +12,15 @@ public class RailroadMapModel implements RailroadMap {
     private List<Track> tracks;
     private List<Route> routes;
 
-    public RailroadMapModel(){
+    public RailroadMapModel(List<Route> routes, List<Station> stations,
+                            List<Space> spaces){
+        this.routes = routes;
+        this.stations = stations;
+        this.spaces = spaces;
 
+        for (Route r : routes){
+            tracks.addAll(r.getTracks());
+        }
     }
 
     @Override
