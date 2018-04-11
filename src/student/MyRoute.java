@@ -14,7 +14,7 @@ public class MyRoute implements Route{
     public MyRoute(Station origin, Station dest, Orientation ort){
         this.origin = origin;
         this.dest = dest;
-        this.baron = null;
+        this.baron = Baron.UNCLAIMED;
         tracks = new ArrayList<>();
         if (ort.equals(Orientation.HORIZONTAL)){
             for (int i = origin.getCol(); i <= dest.getCol(); i++){
@@ -29,7 +29,7 @@ public class MyRoute implements Route{
 
     @Override
     public boolean claim(Baron claimant) {
-        if (this.baron == null){
+        if (this.baron == Baron.UNCLAIMED){
             this.baron = claimant;
             return true;
         }else {
