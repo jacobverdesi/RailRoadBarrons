@@ -12,14 +12,14 @@ public class RailroadMapModel implements RailroadMap {
     private List<Station> stations;
     private List<Track> tracks;
     private List<Route> routes;
-    private List<RailroadMapObserver> observer;
+    private List<RailroadMapObserver> observers;
 
     public RailroadMapModel(List<Route> routes, List<Station> stations,
                             List<Space> spaces){
         this.routes = routes;
         this.stations = stations;
         this.spaces = spaces;
-        observer = new ArrayList<>();
+        observers = new ArrayList<>();
 
         for (Route r : routes){
             tracks.addAll(r.getTracks());
@@ -28,12 +28,12 @@ public class RailroadMapModel implements RailroadMap {
 
     @Override
     public void addObserver(RailroadMapObserver observer) {
-        this.observer.add(observer);
+        this.observers.add(observer);
     }
 
     @Override
     public void removeObserver(RailroadMapObserver observer) {
-
+        this.observers.remove(observer);
     }
 
     @Override
@@ -94,11 +94,6 @@ public class RailroadMapModel implements RailroadMap {
             }
         }
         return null;
-    }
-
-    @Override
-    public void removeObserver(RailroadMapObserver observer) {
-
     }
 
     @Override
