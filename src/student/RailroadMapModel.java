@@ -2,6 +2,7 @@ package student;
 
 import model.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -11,12 +12,14 @@ public class RailroadMapModel implements RailroadMap {
     private List<Station> stations;
     private List<Track> tracks;
     private List<Route> routes;
+    private List<RailroadMapObserver> observer;
 
     public RailroadMapModel(List<Route> routes, List<Station> stations,
                             List<Space> spaces){
         this.routes = routes;
         this.stations = stations;
         this.spaces = spaces;
+        observer = new ArrayList<>();
 
         for (Route r : routes){
             tracks.addAll(r.getTracks());
@@ -25,7 +28,7 @@ public class RailroadMapModel implements RailroadMap {
 
     @Override
     public void addObserver(RailroadMapObserver observer) {
-
+        this.observer.add(observer);
     }
 
     @Override
@@ -90,7 +93,7 @@ public class RailroadMapModel implements RailroadMap {
 
     @Override
     public void removeObserver(RailroadMapObserver observer) {
-
+        this.observer.remove(observer);
     }
 
     @Override
