@@ -11,12 +11,13 @@ public class MyMap implements RailroadMap {
     private List<Space> spaces;
     private List<Station> stations;
     private List<Track> tracks;
-    private List<Route> routes;
+    private List<Route> routes, claimed;
     private List<RailroadMapObserver> observers;
 
     public MyMap(List<Route> routes, List<Station> stations,
                  List<Space> spaces){
         this.routes = routes;
+        this.claimed = new ArrayList<>();
         this.stations = stations;
         this.spaces = spaces;
         observers = new ArrayList<>();
@@ -98,8 +99,6 @@ public class MyMap implements RailroadMap {
 
     @Override
     public void routeClaimed(Route route) {
-        for (Track t : route.getTracks()){
-
-        }
+        claimed.add(route);
     }
 }
