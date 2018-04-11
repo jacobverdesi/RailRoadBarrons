@@ -13,7 +13,6 @@ public class MyMapMaker implements MapMaker {
     public RailroadMap readMap(InputStream in)throws RailroadBaronsException {
      return null;
     }
-
     @Override
     public void writeMap(RailroadMap map, OutputStream out) {
 
