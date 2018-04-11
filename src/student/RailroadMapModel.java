@@ -17,7 +17,6 @@ public class RailroadMapModel implements RailroadMap {
         this.routes = routes;
         this.stations = stations;
         this.spaces = spaces;
-
         for (Route r : routes){
             tracks.addAll(r.getTracks());
         }
@@ -25,6 +24,11 @@ public class RailroadMapModel implements RailroadMap {
 
     @Override
     public void addObserver(RailroadMapObserver observer) {
+
+    }
+
+    @Override
+    public void removeObserver(RailroadMapObserver observer) {
 
     }
 
@@ -88,10 +92,6 @@ public class RailroadMapModel implements RailroadMap {
         return null;
     }
 
-    @Override
-    public void removeObserver(RailroadMapObserver observer) {
-
-    }
 
     @Override
     public void routeClaimed(Route route) {
