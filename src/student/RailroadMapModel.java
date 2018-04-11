@@ -32,6 +32,11 @@ public class RailroadMapModel implements RailroadMap {
     }
 
     @Override
+    public void removeObserver(RailroadMapObserver observer) {
+
+    }
+
+    @Override
     public int getCols() {
         int result = 0;
         for (Station s : stations){
@@ -93,7 +98,7 @@ public class RailroadMapModel implements RailroadMap {
 
     @Override
     public void removeObserver(RailroadMapObserver observer) {
-        this.observer.remove(observer);
+
     }
 
     @Override
