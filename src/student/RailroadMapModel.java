@@ -28,17 +28,30 @@ public class RailroadMapModel implements RailroadMap {
 
     @Override
     public int getLengthOfShortestUnclaimedRoute() {
-        return 0;
+        int result = routes.get(0).getLength();
+        for (Route r : routes){
+            if (r.getLength() < result){
+                result = r.getLength();
+            }
+        }
+        return result;
     }
 
     @Override
     public Route getRoute(int row, int col) {
+        for (Route r : routes){
+            for (Track t : r.getTracks()){
+                if (t.getRow() == row && t.getCol() == col){
+                    return r;
+                }
+            }
+        }
         return null;
     }
 
     @Override
     public Collection<Route> getRoutes() {
-        return null;
+        return routes;
     }
 
     @Override
@@ -48,6 +61,11 @@ public class RailroadMapModel implements RailroadMap {
 
     @Override
     public Space getSpace(int row, int col) {
+        for (Space s : spaces){
+            if (s.getRow() == row && s.getCol() == col){
+                return s;
+            }
+        }
         return null;
     }
 
