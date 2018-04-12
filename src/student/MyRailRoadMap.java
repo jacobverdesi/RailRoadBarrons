@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class MyMap implements RailroadMap {
+public class MyRailRoadMap implements RailroadMap {
 
     private List<Space> spaces;
     private List<Station> stations;
@@ -14,18 +14,16 @@ public class MyMap implements RailroadMap {
     private List<Route> routes, claimed;
     private List<RailroadMapObserver> observers;
 
-    public MyMap(List<Route> routes, List<Station> stations, List<Space> spaces) {
+    public MyRailRoadMap(List<Route> routes, List<Station> stations, List<Space> spaces) {
         this.routes = routes;
         this.claimed = new ArrayList<>();
         this.stations = stations;
         this.spaces = spaces;
         observers = new ArrayList<>();
-
         for (Route r : routes) {
             tracks.addAll(r.getTracks());
         }
     }
-
     @Override
     public void addObserver(RailroadMapObserver observer) {
         this.observers.add(observer);
