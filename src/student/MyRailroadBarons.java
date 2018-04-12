@@ -67,7 +67,7 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public void claimRoute(int row, int col) throws RailroadBaronsException {
-
+        map.getRoute(row, col).claim(currentPlayer.getBaron());
     }
 
     @Override
