@@ -5,14 +5,16 @@ import model.Deck;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class MyDeck implements Deck{
 
     private ArrayList<Card> deck, drawn;
 
-    public MyDeck(){
-        deck = new ArrayList<>();
+    public MyDeck(List<Card> deck){
+        this.deck = new ArrayList<>();
+        this.deck.addAll(deck);
         drawn = new ArrayList<>();
     }
 

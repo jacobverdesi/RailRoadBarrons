@@ -4,7 +4,7 @@ import model.Card;
 import model.Pair;
 
 public class MyPair implements Pair {
-    Card first, second;
+    private Card first, second;
     public MyPair(Card first, Card second){
         this.first = first;
         this.second = second;
