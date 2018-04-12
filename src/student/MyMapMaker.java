@@ -85,7 +85,6 @@ public class MyMapMaker implements MapMaker {
     @Override
     public void writeMap(RailroadMap map, OutputStream out) {
         PrintWriter printWriter = new PrintWriter(out);
-        List<Space> spaces = new ArrayList<>();
         HashMap<Integer, Station> stations = new HashMap<>();
         Collection<Route> routes = map.getRoutes();
         int counter = 0;
