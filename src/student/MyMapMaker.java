@@ -42,16 +42,21 @@ public class MyMapMaker implements MapMaker {
                 stations.put(Integer.parseInt(split[0]), station);
             } else {
                 String[] split = s.split(" ");
-                Station origin = null, dest = null;
+                Station origin = new MyStation(null,0,0), dest = null;
                 MyRoute route = null;
                 for (Integer integer : stations.keySet()) {
                     if (integer == Integer.parseInt(split[0])) {
                         origin = stations.get(integer);
+
                     } else if (integer == Integer.parseInt(split[0])) {
                         dest = stations.get(integer);
+
                     }
                 }
+                System.out.println(origin);
+                System.out.println(dest);
                 if (origin != null && dest != null) {
+                    System.out.println("test");
                     if (origin.getCol() == dest.getCol()) {
                         route = new MyRoute(origin, dest, Orientation.VERTICAL);
                     } else if (origin.getRow() == dest.getRow()) {
@@ -70,6 +75,7 @@ public class MyMapMaker implements MapMaker {
                     }
                 }
                 if (route != null) {
+                    System.out.println(route+"");
                     routes.add(route);
                 }
             }
