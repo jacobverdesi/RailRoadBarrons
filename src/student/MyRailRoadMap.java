@@ -97,5 +97,8 @@ public class MyRailRoadMap implements RailroadMap {
     @Override
     public void routeClaimed(Route route) {
         claimed.add(route);
+        for (RailroadMapObserver o : observers){
+            o.notifyAll();
+        }
     }
 }
