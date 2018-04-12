@@ -83,6 +83,25 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public boolean gameIsOver() {
+        int unable = 0;
+        for (Player p : players){
+            if (!p.canContinuePlaying(map.getLengthOfShortestUnclaimedRoute())){
+                unable++;
+            }
+        }
+        if (unable == players.size()){
+            return true;
+        }
+
+        int claimedRoutes = 0;
+        for (Route r : map.getRoutes()){
+            if (!r.claim(currentPlayer.getBaron())){
+                claimedRoutes++;
+            }
+        }
+        if (claimedRoutes == map.getRoutes().size()){
+            return true;
+        }
         return false;
     }
 }
