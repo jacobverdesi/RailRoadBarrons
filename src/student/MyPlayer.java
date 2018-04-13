@@ -10,14 +10,13 @@ public class MyPlayer implements Player {
     private Baron baron;
     private int score;
     private ArrayList<Route> routes;
-    private ArrayList<PlayerObserver> observers;
+    private ArrayList<PlayerObserver> observers = new ArrayList<>();
     private Pair pair;
     private ArrayList<Card> hand, dealt;
     private int pieces;
     private boolean claimedTurn;
 
     public MyPlayer(Baron baron){
-        this.observers = new ArrayList<>();
         this.pieces = 45;
         this.baron = baron;
         hand = new ArrayList<>();
