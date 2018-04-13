@@ -9,15 +9,11 @@ import java.util.Random;
 
 public class MyRailroadBarons implements RailroadBarons {
 
-    private ArrayList<Player> players;
+    private ArrayList<Player> players = new ArrayList<>();
     private ArrayList<RailroadBaronsObserver> observers=new ArrayList<>();
     private Player currentPlayer;
     private Deck deck;
     private RailroadMap map;
-/**
-    public MyRailroadBarons() {
-    }
- */
 
     @Override
     public Player getCurrentPlayer() {
@@ -38,7 +34,6 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public void startAGameWith(RailroadMap map) {
-        System.out.println("Test");
         this.map = map;
         ArrayList<Card> cards = new ArrayList<>();
         players.add(new MyPlayer(Baron.BLUE));
@@ -66,8 +61,6 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
-
-        System.out.println("Test");
         players.add(new MyPlayer(Baron.BLUE));
         players.add(new MyPlayer(Baron.RED));
         players.add(new MyPlayer(Baron.YELLOW));
