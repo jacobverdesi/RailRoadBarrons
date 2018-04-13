@@ -74,6 +74,13 @@ public class MyRailroadBarons implements RailroadBarons {
     public void endTurn() {
         players.remove(currentPlayer);
         players.add(players.size()-1, currentPlayer);
+        for (RailroadBaronsObserver o : observers){
+            o.turnEnded(this, currentPlayer);
+        }
+        currentPlayer = players.get(0);
+        for (RailroadBaronsObserver o : observers){
+            o.turnStarted(this, currentPlayer);
+        }
     }
 
     @Override
@@ -89,19 +96,27 @@ public class MyRailroadBarons implements RailroadBarons {
                 unable++;
             }
         }
-        if (unable == players.size()){
-            return true;
-        }
-
         int claimedRoutes = 0;
         for (Route r : map.getRoutes()){
             if (!r.claim(currentPlayer.getBaron())){
                 claimedRoutes++;
             }
         }
-        if (claimedRoutes == map.getRoutes().size()){
+        if (unable == players.size() || claimedRoutes == map.getRoutes().size()){
+            int highScore = 0;
+            Player best = null;
+            for (Player p : players){
+                if (p.getScore() > highScore){
+                    highScore = p.getScore();
+                    best = p;
+                }
+            }
+            for (RailroadBaronsObserver o : observers){
+                o.gameOver(this, best);
+            }
             return true;
         }
+
         return false;
     }
 }
