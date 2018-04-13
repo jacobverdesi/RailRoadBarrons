@@ -49,7 +49,6 @@ public interface RailroadBarons {
      * @param map The {@link RailroadMap} on which the game will be played.
      */
     void startAGameWith(RailroadMap map);
-
     /**
      * Starts a new {@linkplain RailroadBarons Railroad Barons} game with the
      * specified {@linkplain RailroadMap map} and {@linkplain Deck deck of
