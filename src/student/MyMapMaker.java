@@ -45,9 +45,6 @@ public class MyMapMaker implements MapMaker {
                 Station origin = new MyStation(null, 0, 0);
                 Station dest = new MyStation(null, 0, 0);
                 Route route = new MyRoute(origin, dest, Orientation.HORIZONTAL);
-                System.out.println(origin);
-                System.out.println(dest);
-                System.out.println(route);
                 for (Integer integer : stations.keySet()) {
                     if (integer == Integer.parseInt(split[0])) {
                         origin = stations.get(integer);
@@ -58,16 +55,12 @@ public class MyMapMaker implements MapMaker {
                 System.out.println("INITILIZED----------------");
                 System.out.println(origin);
                 System.out.println(dest);
-                System.out.println(route);
                 if (origin.getCol() == dest.getCol()) {
                     System.out.println(origin.getCol() +","+dest.getCol());
                     route = new MyRoute(origin, dest, Orientation.VERTICAL);
                 } else {
                     route = new MyRoute(origin, dest, Orientation.HORIZONTAL);
                 }
-
-                System.out.println("ROUTE----------------");
-                System.out.println(route);
                 if (!split[2].equals("UNCLAIMED")) {
                     if (split[2].equals("Red")) {
                         route.claim(Baron.RED);
@@ -79,8 +72,11 @@ public class MyMapMaker implements MapMaker {
                         route.claim(Baron.GREEN);
                     }
                 }
+
+                System.out.println("ROUTE----------------");
+                System.out.println(route);
                 routes.add(route);
-                break;
+
             }
 
         }
