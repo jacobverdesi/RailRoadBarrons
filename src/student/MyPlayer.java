@@ -53,6 +53,7 @@ public class MyPlayer implements Player {
         this.pair = dealt;
         this.hand.add(pair.getFirstCard());
         this.hand.add(pair.getSecondCard());
+        observer.playerChanged(this);
     }
 
     @Override
@@ -137,6 +138,7 @@ public class MyPlayer implements Player {
             route.claim(baron);
             routes.add(route);
             score += route.getPointValue();
+            observer.playerChanged(this);
         }
     }
 
