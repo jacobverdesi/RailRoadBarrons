@@ -4,18 +4,24 @@ import model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Random;
 
 public class MyRailroadBarons implements RailroadBarons {
 
     private ArrayList<Player> players;
-    private ArrayList<RailroadBaronsObserver> observers;
+    private ArrayList<RailroadBaronsObserver> observers=new ArrayList<>();
     private Player currentPlayer;
     private Deck deck;
     private RailroadMap map;
-
-    public MyRailroadBarons(ArrayList<Player> players){
-        this.players = players;
+/**
+    public MyRailroadBarons() {
+        players.add(new MyPlayer(Baron.BLUE));
+        players.add(new MyPlayer(Baron.RED));
+        players.add(new MyPlayer(Baron.YELLOW));
+        players.add(new MyPlayer(Baron.GREEN));
     }
+ */
 
     @Override
     public Player getCurrentPlayer() {
@@ -25,6 +31,7 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public void addRailroadBaronsObserver(RailroadBaronsObserver observer) {
+        System.out.println(observer);
         observers.add(observer);
     }
 
@@ -35,14 +42,30 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public void startAGameWith(RailroadMap map) {
+        System.out.println("Test");
         this.map = map;
         ArrayList<Card> cards = new ArrayList<>();
+        for(int j=0;j<20;j++){
+                cards.add(Card.RED);
+                cards.add(Card.GREEN);
+                cards.add(Card.ORANGE);
+                cards.add(Card.YELLOW);
+                cards.add(Card.WILD);
+                cards.add(Card.BLACK);
+                cards.add(Card.BLUE);
+                cards.add(Card.PINK);
+                cards.add(Card.WHITE);
+        }
+        long seed=System.nanoTime();
+        Collections.shuffle(cards,new Random(seed));
         //TODO : make and add random cards to list
         this.deck = new MyDeck(cards);
+
     }
 
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
+        System.out.println("Test");
         this.map = map;
         this.deck = deck;
     }
@@ -59,7 +82,7 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public boolean canCurrentPlayerClaimRoute(int row, int col) {
-        if (currentPlayer.canClaimRoute(map.getRoute(row, col))){
+        if (currentPlayer.canClaimRoute(map.getRoute(row, col))) {
             return true;
         }
         return false;
@@ -73,12 +96,12 @@ public class MyRailroadBarons implements RailroadBarons {
     @Override
     public void endTurn() {
         players.remove(currentPlayer);
-        players.add(players.size()-1, currentPlayer);
-        for (RailroadBaronsObserver o : observers){
+        players.add(players.size() - 1, currentPlayer);
+        for (RailroadBaronsObserver o : observers) {
             o.turnEnded(this, currentPlayer);
         }
         currentPlayer = players.get(0);
-        for (RailroadBaronsObserver o : observers){
+        for (RailroadBaronsObserver o : observers) {
             o.turnStarted(this, currentPlayer);
         }
     }
@@ -91,27 +114,27 @@ public class MyRailroadBarons implements RailroadBarons {
     @Override
     public boolean gameIsOver() {
         int unable = 0;
-        for (Player p : players){
-            if (!p.canContinuePlaying(map.getLengthOfShortestUnclaimedRoute())){
+        for (Player p : players) {
+            if (!p.canContinuePlaying(map.getLengthOfShortestUnclaimedRoute())) {
                 unable++;
             }
         }
         int claimedRoutes = 0;
-        for (Route r : map.getRoutes()){
-            if (!r.claim(currentPlayer.getBaron())){
+        for (Route r : map.getRoutes()) {
+            if (!r.claim(currentPlayer.getBaron())) {
                 claimedRoutes++;
             }
         }
-        if (unable == players.size() || claimedRoutes == map.getRoutes().size()){
+        if (unable == players.size() || claimedRoutes == map.getRoutes().size()) {
             int highScore = 0;
             Player best = null;
-            for (Player p : players){
-                if (p.getScore() > highScore){
+            for (Player p : players) {
+                if (p.getScore() > highScore) {
                     highScore = p.getScore();
                     best = p;
                 }
             }
-            for (RailroadBaronsObserver o : observers){
+            for (RailroadBaronsObserver o : observers) {
                 o.gameOver(this, best);
             }
             return true;
