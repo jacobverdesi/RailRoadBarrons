@@ -160,6 +160,6 @@ public class MyPlayer implements Player {
 
     @Override
     public String toString() {
-        return "Player: "+baron+" Score: "+score;
+        return "Player: "+baron+" Score: "+score+" Pieces: "+pieces;
     }
 }
