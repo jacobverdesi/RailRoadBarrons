@@ -9,8 +9,7 @@ public class MyTrack implements Track {
     private Route route;
     private int row, col;
 
-    public MyTrack(Orientation ort, int row,
-                   int col, Route route){
+    public MyTrack(Orientation ort, int row, int col, Route route){
         this.baron = route.getBaron();
         this.ort = ort;
         this.route = route;

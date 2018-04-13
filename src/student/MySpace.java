@@ -28,4 +28,9 @@ public class MySpace implements Space{
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Row: "+row+" Col: "+col;
+    }
 }

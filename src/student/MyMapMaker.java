@@ -44,7 +44,7 @@ public class MyMapMaker implements MapMaker {
                 String[] split = s.split(" ");
                 Station origin = new MyStation(null, 0, 0);
                 Station dest = new MyStation(null, 0, 0);
-                Route route = new MyRoute(origin, dest, Orientation.HORIZONTAL);
+                Route route;
                 for (Integer integer : stations.keySet()) {
                     if (integer == Integer.parseInt(split[0])) {
                         origin = stations.get(integer);
@@ -52,33 +52,25 @@ public class MyMapMaker implements MapMaker {
                         dest = stations.get(integer);
                     }
                 }
-                System.out.println("INITILIZED----------------");
-                System.out.println(origin);
-                System.out.println(dest);
+
                 if (origin.getCol() == dest.getCol()) {
-                    System.out.println(origin.getCol() +","+dest.getCol());
                     route = new MyRoute(origin, dest, Orientation.VERTICAL);
                 } else {
                     route = new MyRoute(origin, dest, Orientation.HORIZONTAL);
                 }
                 if (!split[2].equals("UNCLAIMED")) {
-                    if (split[2].equals("Red")) {
+                    if (split[2].equals("RED")) {
                         route.claim(Baron.RED);
-                    } else if (split[2].equals("Yellow")) {
+                    } else if (split[2].equals("YELLOW")) {
                         route.claim(Baron.YELLOW);
-                    } else if (split[2].equals("Blue")) {
+                    } else if (split[2].equals("BLUE")) {
                         route.claim(Baron.BLUE);
-                    } else if (split[2].equals("Green")) {
+                    } else if (split[2].equals("GREEN")) {
                         route.claim(Baron.GREEN);
                     }
                 }
-
-                System.out.println("ROUTE----------------");
-                System.out.println(route);
                 routes.add(route);
-
             }
-
         }
         List<Station> stationList = new ArrayList<>();
         for (Integer integer : stations.keySet()) {
@@ -96,20 +88,35 @@ public class MyMapMaker implements MapMaker {
         Collection<Route> routes = map.getRoutes();
         int counter = 0;
         for (Route route : routes) {
-            if (stations.containsKey(route.getOrigin())) {
+            if (!stations.containsValue(route.getOrigin())) {
                 stations.put(counter, route.getOrigin());
+                counter++;
+            }
+           else if (!stations.containsValue(route.getDestination())) {
+                stations.put(counter, route.getDestination());
                 counter++;
             }
         }
         for (Integer integer : stations.keySet()) {
             Station station = stations.get(integer);
-            printWriter.write(integer + " " + station.getRow() + " " + station.getCol() + " " + station.getName());
+            printWriter.println(integer + " " + station.getRow() + " " + station.getCol() + " " + station.getName());
         }
-        printWriter.write("##ROUTES##");
+        printWriter.println("##ROUTES##");
         for (Route route : routes) {
+            int origin=0;
+            int dest=0;
+            for(Integer integer:stations.keySet()){
+                if(stations.get(integer)==route.getOrigin()){
+                    origin=integer;
+                }
+                else if(stations.get(integer)==route.getDestination()){
+                    dest=integer;
+                }
+            }
+            printWriter.println(origin+" "+dest+" "+route.getBaron());
 
-            //printWriter.write();
         }
-
+        printWriter.flush();
+        printWriter.close();
     }
 }

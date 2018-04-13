@@ -2,11 +2,9 @@ package student;
 
 import model.RailroadMap;
 import model.Route;
+import model.Space;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Collection;
 
 public class TESTMYMAP {
@@ -15,11 +13,8 @@ public class TESTMYMAP {
         InputStream targetStream = new FileInputStream(initialFile);
         MyMapMaker myMapMaker=new MyMapMaker();
         RailroadMap map= myMapMaker.readMap(targetStream);
-        Collection<Route> routes=map.getRoutes();
-        for(Route route:routes){
-            System.out.println(route);
-        }
-        System.out.println(map.getRoutes());
-        System.out.println(map);
+
+        OutputStream outputStream=System.out;
+        myMapMaker.writeMap(map,outputStream);
     }
 }
