@@ -54,7 +54,6 @@ public class MyRailroadBarons implements RailroadBarons {
 
         long seed=System.nanoTime();
         Collections.shuffle(cards,new Random(seed));
-        //TODO : make and add random cards to list
         this.deck = new MyDeck(cards);
 
     }
