@@ -16,10 +16,6 @@ public class MyRailroadBarons implements RailroadBarons {
     private RailroadMap map;
 /**
     public MyRailroadBarons() {
-        players.add(new MyPlayer(Baron.BLUE));
-        players.add(new MyPlayer(Baron.RED));
-        players.add(new MyPlayer(Baron.YELLOW));
-        players.add(new MyPlayer(Baron.GREEN));
     }
  */
 
@@ -45,6 +41,10 @@ public class MyRailroadBarons implements RailroadBarons {
         System.out.println("Test");
         this.map = map;
         ArrayList<Card> cards = new ArrayList<>();
+        players.add(new MyPlayer(Baron.BLUE));
+        players.add(new MyPlayer(Baron.RED));
+        players.add(new MyPlayer(Baron.YELLOW));
+        players.add(new MyPlayer(Baron.GREEN));
         for(int j=0;j<20;j++){
                 cards.add(Card.RED);
                 cards.add(Card.GREEN);
@@ -56,6 +56,7 @@ public class MyRailroadBarons implements RailroadBarons {
                 cards.add(Card.PINK);
                 cards.add(Card.WHITE);
         }
+
         long seed=System.nanoTime();
         Collections.shuffle(cards,new Random(seed));
         //TODO : make and add random cards to list
@@ -65,7 +66,12 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
+
         System.out.println("Test");
+        players.add(new MyPlayer(Baron.BLUE));
+        players.add(new MyPlayer(Baron.RED));
+        players.add(new MyPlayer(Baron.YELLOW));
+        players.add(new MyPlayer(Baron.GREEN));
         this.map = map;
         this.deck = deck;
     }
