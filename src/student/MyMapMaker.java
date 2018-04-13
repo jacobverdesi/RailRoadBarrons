@@ -2,6 +2,7 @@ package student;
 
 import model.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -10,10 +11,11 @@ import java.util.*;
 public class MyMapMaker implements MapMaker {
     @Override
     public RailroadMap readMap(InputStream in) {
-        RailroadMap railroadMap;
+        RailroadMap railroadMap=null;
         List<Space> spaces = new ArrayList<>();
         HashMap<Integer, Station> stations = new HashMap<>();
         List<Route> routes = new ArrayList<>();
+        try {
         Scanner scanner = new Scanner(in);
         Boolean isRoutes = false;
         while (scanner.hasNextLine()) {
@@ -27,7 +29,6 @@ public class MyMapMaker implements MapMaker {
                         maxRow = station.getRow();
                     } else if (station.getCol() > maxCol) {
                         maxCol = station.getCol();
-
                     }
                 }
                 for (int i = 0; i < maxCol; i++) {
@@ -76,8 +77,12 @@ public class MyMapMaker implements MapMaker {
         for (Integer integer : stations.keySet()) {
             stationList.add(stations.get(integer));
         }
-
-        railroadMap = new MyRailRoadMap(routes, stationList, spaces);
+            railroadMap = new MyRailRoadMap(routes, stationList, spaces);
+            in.close();
+        }
+        catch (IOException io) {
+            System.out.println(io);
+        }
         return railroadMap;
     }
 
