@@ -9,15 +9,13 @@ import java.util.Random;
 
 public class MyRailroadBarons implements RailroadBarons {
 
-    private ArrayList<Player> players;
+    private ArrayList<Player> players=new ArrayList<>();
     private ArrayList<RailroadBaronsObserver> observers=new ArrayList<>();
     private Player currentPlayer;
     private Deck deck;
     private RailroadMap map;
-/**
-    public MyRailroadBarons() {
-    }
- */
+
+
 
     @Override
     public Player getCurrentPlayer() {
@@ -35,16 +33,12 @@ public class MyRailroadBarons implements RailroadBarons {
     public void removeRailroadBaronsObserver(RailroadBaronsObserver observer) {
         observers.remove(observer);
     }
-
     @Override
     public void startAGameWith(RailroadMap map) {
         System.out.println("Test");
         this.map = map;
         ArrayList<Card> cards = new ArrayList<>();
-        players.add(new MyPlayer(Baron.BLUE));
-        players.add(new MyPlayer(Baron.RED));
-        players.add(new MyPlayer(Baron.YELLOW));
-        players.add(new MyPlayer(Baron.GREEN));
+
         for(int j=0;j<20;j++){
                 cards.add(Card.RED);
                 cards.add(Card.GREEN);
@@ -56,18 +50,13 @@ public class MyRailroadBarons implements RailroadBarons {
                 cards.add(Card.PINK);
                 cards.add(Card.WHITE);
         }
-
         long seed=System.nanoTime();
         Collections.shuffle(cards,new Random(seed));
-        //TODO : make and add random cards to list
         this.deck = new MyDeck(cards);
-
     }
 
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
-
-        System.out.println("Test");
         players.add(new MyPlayer(Baron.BLUE));
         players.add(new MyPlayer(Baron.RED));
         players.add(new MyPlayer(Baron.YELLOW));
@@ -75,7 +64,6 @@ public class MyRailroadBarons implements RailroadBarons {
         this.map = map;
         this.deck = deck;
     }
-
     @Override
     public RailroadMap getRailroadMap() {
         return map;
