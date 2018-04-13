@@ -42,48 +42,53 @@ public class MyMapMaker implements MapMaker {
                 stations.put(Integer.parseInt(split[0]), station);
             } else {
                 String[] split = s.split(" ");
-                Station origin = new MyStation(null,0,0), dest = null;
-                MyRoute route = null;
+                Station origin = new MyStation(null, 0, 0);
+                Station dest = new MyStation(null, 0, 0);
+                Route route = new MyRoute(origin, dest, Orientation.HORIZONTAL);
+                System.out.println(origin);
+                System.out.println(dest);
+                System.out.println(route);
                 for (Integer integer : stations.keySet()) {
                     if (integer == Integer.parseInt(split[0])) {
                         origin = stations.get(integer);
-
-                    } else if (integer == Integer.parseInt(split[0])) {
+                    } else if (integer == Integer.parseInt(split[1])) {
                         dest = stations.get(integer);
-
                     }
                 }
+                System.out.println("INITILIZED----------------");
                 System.out.println(origin);
                 System.out.println(dest);
-                if (origin != null && dest != null) {
-                    System.out.println("test");
-                    if (origin.getCol() == dest.getCol()) {
-                        route = new MyRoute(origin, dest, Orientation.VERTICAL);
-                    } else if (origin.getRow() == dest.getRow()) {
-                        route = new MyRoute(origin, dest, Orientation.HORIZONTAL);
-                    }
-                    if (!split[2].equals("UNCLAIMED")) {
-                        if (split[2].equals("Red")) {
-                            route.claim(Baron.RED);
-                        } else if (split[2].equals("Yellow")) {
-                            route.claim(Baron.YELLOW);
-                        } else if (split[2].equals("Blue")) {
-                            route.claim(Baron.BLUE);
-                        } else if (split[2].equals("Green")) {
-                            route.claim(Baron.GREEN);
-                        }
+                System.out.println(route);
+                if (origin.getCol() == dest.getCol()) {
+                    System.out.println(origin.getCol() +","+dest.getCol());
+                    route = new MyRoute(origin, dest, Orientation.VERTICAL);
+                } else {
+                    route = new MyRoute(origin, dest, Orientation.HORIZONTAL);
+                }
+
+                System.out.println("ROUTE----------------");
+                System.out.println(route);
+                if (!split[2].equals("UNCLAIMED")) {
+                    if (split[2].equals("Red")) {
+                        route.claim(Baron.RED);
+                    } else if (split[2].equals("Yellow")) {
+                        route.claim(Baron.YELLOW);
+                    } else if (split[2].equals("Blue")) {
+                        route.claim(Baron.BLUE);
+                    } else if (split[2].equals("Green")) {
+                        route.claim(Baron.GREEN);
                     }
                 }
-                if (route != null) {
-                    System.out.println(route+"");
-                    routes.add(route);
-                }
+                routes.add(route);
+                break;
             }
+
         }
         List<Station> stationList = new ArrayList<>();
         for (Integer integer : stations.keySet()) {
             stationList.add(stations.get(integer));
         }
+
         railroadMap = new MyRailRoadMap(routes, stationList, spaces);
         return railroadMap;
     }

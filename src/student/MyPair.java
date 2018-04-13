@@ -18,4 +18,8 @@ public class MyPair implements Pair {
         return second;
     }
 
+    @Override
+    public String toString() {
+        return "First:"+first+" , Second: "+second;
+    }
 }

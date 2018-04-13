@@ -96,4 +96,9 @@ public class MyRoute implements Route{
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Route: "+origin.getName()+" -> "+dest.getName()+" Ort:"+getOrientation()+" claimed: "+baron;
+    }
 }

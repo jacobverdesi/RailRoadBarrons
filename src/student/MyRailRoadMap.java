@@ -20,9 +20,9 @@ public class MyRailRoadMap implements RailroadMap {
         this.stations = stations;
         this.spaces = spaces;
         observers = new ArrayList<>();
-        for (Route r : routes) {
-            tracks.addAll(r.getTracks());
-        }
+//        for (Route r : routes) {
+//            tracks.addAll(r.getTracks());
+//        }
     }
     @Override
     public void addObserver(RailroadMapObserver observer) {

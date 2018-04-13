@@ -157,4 +157,9 @@ public class MyPlayer implements Player {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Player: "+baron+" Score: "+score;
+    }
 }

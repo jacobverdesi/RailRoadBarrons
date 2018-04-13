@@ -35,4 +35,9 @@ public class MyStation implements Station{
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Name: "+name+" Row: "+ row+" Col: "+ col;
+    }
 }

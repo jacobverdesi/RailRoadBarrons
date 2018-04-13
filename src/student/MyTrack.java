@@ -51,4 +51,8 @@ public class MyTrack implements Track {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return " Row: "+row+" Col: "+col +" ";
+    }
 }
