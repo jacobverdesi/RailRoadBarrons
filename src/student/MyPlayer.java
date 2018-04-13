@@ -10,13 +10,14 @@ public class MyPlayer implements Player {
     private Baron baron;
     private int score;
     private ArrayList<Route> routes;
-    private PlayerObserver observer;
+    private ArrayList<PlayerObserver> observers;
     private Pair pair;
     private ArrayList<Card> hand, dealt;
     private int pieces;
     private boolean claimedTurn;
 
     public MyPlayer(Baron baron){
+        this.observers = new ArrayList<>();
         this.pieces = 45;
         this.baron = baron;
         hand = new ArrayList<>();
@@ -35,12 +36,12 @@ public class MyPlayer implements Player {
 
     @Override
     public void addPlayerObserver(PlayerObserver observer) {
-        this.observer = observer;
+        this.observers.add(observer);
     }
 
     @Override
     public void removePlayerObserver(PlayerObserver observer) {
-        this.observer = null;
+        this.observers.remove(observer);
     }
 
     @Override
@@ -53,7 +54,9 @@ public class MyPlayer implements Player {
         this.pair = dealt;
         this.hand.add(pair.getFirstCard());
         this.hand.add(pair.getSecondCard());
-        observer.playerChanged(this);
+        for (PlayerObserver p : observers){
+            p.playerChanged(this);
+        }
     }
 
     @Override
@@ -138,7 +141,9 @@ public class MyPlayer implements Player {
             route.claim(baron);
             routes.add(route);
             score += route.getPointValue();
-            observer.playerChanged(this);
+            for (PlayerObserver p : observers){
+                p.playerChanged(this);
+            }
         }
     }
 
