@@ -23,7 +23,6 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public void addRailroadBaronsObserver(RailroadBaronsObserver observer) {
-        System.out.println(observer);
         observers.add(observer);
     }
 
@@ -55,6 +54,11 @@ public class MyRailroadBarons implements RailroadBarons {
         long seed=System.nanoTime();
         Collections.shuffle(cards,new Random(seed));
         this.deck = new MyDeck(cards);
+        System.out.println(observers);
+        for (int i =0; i<4;i++){
+            players.get(i).startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
+           // observers.notifyAll();
+        }
 
     }
 

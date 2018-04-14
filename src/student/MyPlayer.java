@@ -20,6 +20,7 @@ public class MyPlayer implements Player {
         this.pieces = 45;
         this.baron = baron;
         hand = new ArrayList<>();
+        hand.add(Card.WILD);
         routes = new ArrayList<>();
         claimedTurn = false;
     }
