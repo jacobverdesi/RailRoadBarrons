@@ -65,7 +65,7 @@ public class MyPlayer implements Player {
 
     @Override
     public Pair getLastTwoCards() {
-        return new MyPair(hand.get(hand.size()-2), hand.get(hand.size()-1));
+        return new MyPair(pair.getFirstCard(), pair.getSecondCard());
     }
 
     @Override
@@ -147,8 +147,6 @@ public class MyPlayer implements Player {
                 }
             }
         }
-
-
     return cards;
     }
 
@@ -202,7 +200,11 @@ public class MyPlayer implements Player {
 //            }
 //        }
             System.out.println(hand);
-
+            ArrayList<Card> cardArrayList=new ArrayList<>();
+            cardArrayList=getEnoughCards(route.getLength());
+            for(Card card:cardArrayList){
+                hand.remove(card);
+            }
             System.out.println(hand);
             for (PlayerObserver p : observers) {
                 p.playerChanged(this);
