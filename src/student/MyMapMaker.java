@@ -44,8 +44,6 @@ public class MyMapMaker implements MapMaker {
                             route = new MyRoute(dest,origin, Orientation.HORIZONTAL);
                         }
                 }
-
-
                 if (!split[2].equals("UNCLAIMED")) {
                     if (split[2].equals("RED")){
                         route.claim(Baron.RED);

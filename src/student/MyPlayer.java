@@ -18,20 +18,19 @@ public class MyPlayer implements Player {
     private boolean claimedTurn;
 
     public MyPlayer(Baron baron){
-        this.pieces = 45;
+        this.pieces = 5;
         this.baron = baron;
         hand = new ArrayList<>();
-
+        routes = new ArrayList<>();
+        claimedTurn = false;
         for (PlayerObserver p : observers){
             p.playerChanged(this);
         }
-        routes = new ArrayList<>();
-        claimedTurn = false;
     }
 
     @Override
     public void reset(Card... dealt) {
-        this.pieces = 45;
+        this.pieces = 5;
         hand.clear();
         score = 0;
         routes.clear();
@@ -55,12 +54,16 @@ public class MyPlayer implements Player {
 
     @Override
     public void startTurn(Pair dealt) {
+        claimedTurn=false;
         this.pair = dealt;
-        this.hand.add(pair.getFirstCard());
-        this.hand.add(pair.getSecondCard());
-        for (PlayerObserver p : observers){
-            p.playerChanged(this);
+        if(dealt.getFirstCard()!=Card.NONE&&dealt.getSecondCard()!=Card.NONE) {
+            this.hand.add(pair.getFirstCard());
+            this.hand.add(pair.getSecondCard());
+            for (PlayerObserver p : observers){
+                p.playerChanged(this);
+            }
         }
+
     }
 
     @Override
@@ -86,9 +89,7 @@ public class MyPlayer implements Player {
 
     @Override
     public boolean canClaimRoute(Route route) {
-        System.out.println("CanClaimRoute");
        return pieces >= route.getLength() && hasEnoughCards(route.getLength())&& !claimedTurn;
-
     }
     private boolean hasEnoughCards(int size){
         if(getNumColorCards(Card.WILD)>0) {
@@ -152,68 +153,21 @@ public class MyPlayer implements Player {
 
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
-        System.out.println("ClaimRoute");
         if(canClaimRoute(route)){
-//        Card first = pair.getFirstCard();
-//        Card second = pair.getSecondCard();
-//            ArrayList<Card> firstMatches = new ArrayList<>();
-//            ArrayList<Card> secondMatches = new ArrayList<>();
-//            ArrayList<Card> wilds = new ArrayList<>();
-//        for (Card c : hand) {
-//            if (c.equals(first)) {
-//                firstMatches.add(c);
-//            } else if (c.equals(second)) {
-//                secondMatches.add(c);
-//            } else if (c.equals(Card.WILD)) {
-//                wilds.add(c);
-//            }
-//        }
-//        if (firstMatches.size() < secondMatches.size()) {
-//            if (firstMatches.size() < route.getLength() && wilds.size() > 0) {
-//                for (Card h : hand) {
-//                    if (h.equals(Card.WILD)) {
-//                        hand.remove(h);
-//                    }
-//                }
-//            }
-//            for (Card c : firstMatches) {
-//                for (Card h : hand) {
-//                    if (c.equals(h)) {
-//                        hand.remove(h);
-//                    }
-//                }
-//            }
-//        } else {
-//            if (secondMatches.size() < route.getLength() && wilds.size() > 0) {
-//                for (Card h : hand) {
-//                    if (h.equals(Card.WILD)) {
-//                        hand.remove(h);
-//                    }
-//                }
-//                for (Card c : secondMatches) {
-//                    for (Card h : hand) {
-//                        if (c.equals(h)) {
-//                            hand.remove(h);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-            System.out.println(hand);
-            ArrayList<Card> cardArrayList=new ArrayList<>();
-            cardArrayList=getEnoughCards(route.getLength());
+            ArrayList<Card> cardArrayList=getEnoughCards(route.getLength());
             for(Card card:cardArrayList){
                 hand.remove(card);
             }
-            System.out.println(hand);
+            claimedTurn = true;
+            route.claim(baron);
+            routes.add(route);
+            pieces-=route.getLength();
+            score +=route.getPointValue();
             for (PlayerObserver p : observers) {
                 p.playerChanged(this);
             }
-           // claimedTurn = true;
-            route.claim(baron);
-            routes.add(route);
-            score += route.getPointValue();
         }
+
         else {
             throw new RailroadBaronsException("Cannot claim route");
         }
@@ -228,13 +182,9 @@ public class MyPlayer implements Player {
     public int getScore() {
         return score;
     }
-
     @Override
     public boolean canContinuePlaying(int shortestUnclaimedRoute) {
-        if (hand.size() >= shortestUnclaimedRoute && pieces >= shortestUnclaimedRoute){
-            return true;
-        }
-        return false;
+        return hasEnoughCards(shortestUnclaimedRoute) && pieces >= shortestUnclaimedRoute;
     }
 
     @Override
