@@ -2,28 +2,40 @@ package student;
 
 import model.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class MyRailRoadMap implements RailroadMap {
 
-    private List<Space> spaces;
+    private Space[][] spaces;
     private List<Station> stations;
     private List<Track> tracks;
     private List<Route> routes, claimed;
     private List<RailroadMapObserver> observers;
 
-    public MyRailRoadMap(List<Route> routes, List<Station> stations, List<Space> spaces) {
+    public MyRailRoadMap(List<Route> routes, List<Station> stations) {
         this.routes = routes;
         this.claimed = new ArrayList<>();
         this.stations = stations;
-        this.spaces = spaces;
+        spaces = new Space[this.getRows() + 1][this.getCols() + 1];
+        for (Route route : routes) {
+            Station origin=route.getOrigin();
+            Station dest=route.getDestination();
+            spaces[origin.getRow()][origin.getCol()]=origin;
+            spaces[dest.getRow()][dest.getCol()]=dest;
+            for (Track track : route.getTracks()) {
+                spaces[track.getRow()][track.getCol()] = track;
+            }
+        }
         observers = new ArrayList<>();
+
 //        for (Route r : routes) {
 //            tracks.addAll(r.getTracks());
 //        }
     }
+
     @Override
     public void addObserver(RailroadMapObserver observer) {
         this.observers.add(observer);
@@ -86,18 +98,14 @@ public class MyRailRoadMap implements RailroadMap {
 
     @Override
     public Space getSpace(int row, int col) {
-        for (Space s : spaces) {
-            if (s.getRow() == row && s.getCol() == col) {
-                return s;
-            }
-        }
-        return null;
+
+        return spaces[row][col];
     }
 
     @Override
     public void routeClaimed(Route route) {
         claimed.add(route);
-        for (RailroadMapObserver o : observers){
+        for (RailroadMapObserver o : observers) {
             o.routeClaimed(this, route);
         }
     }

@@ -22,21 +22,6 @@ public class MyMapMaker implements MapMaker {
             String s = scanner.nextLine();
             if (s.equals("##ROUTES##")) {
                 isRoutes = true;
-                int maxCol = 0;
-                int maxRow = 0;
-                for (Station station : stations.values()) {
-                    if (station.getRow() > maxRow) {
-                        maxRow = station.getRow();
-                    } else if (station.getCol() > maxCol) {
-                        maxCol = station.getCol();
-                    }
-                }
-                for (int i = 0; i < maxCol; i++) {
-                    for (int j = 0; j < maxCol; j++) {
-                        MySpace space = new MySpace(i, j);
-                        spaces.add(space);
-                    }
-                }
             } else if (!isRoutes) {
                 String[] split = s.split(" ");
                 Station station = new MyStation(split[3], Integer.parseInt(split[1]), Integer.parseInt(split[2]));
@@ -53,11 +38,20 @@ public class MyMapMaker implements MapMaker {
                         dest = stations.get(integer);
                     }
                 }
-
                 if (origin.getCol() == dest.getCol()) {
-                    route = new MyRoute(origin, dest, Orientation.VERTICAL);
+                    if(origin.getRow()>dest.getRow()) {
+                        route = new MyRoute(origin, dest, Orientation.VERTICAL);
+                    }
+                    else {
+                        route = new MyRoute(dest,origin, Orientation.VERTICAL);
+                    }
                 } else {
+                    if(origin.getCol()>dest.getCol()) {
                     route = new MyRoute(origin, dest, Orientation.HORIZONTAL);
+                }
+                else {
+                    route = new MyRoute(dest,origin, Orientation.HORIZONTAL);
+                }
                 }
                 if (!split[2].equals("UNCLAIMED")) {
                     if (split[2].equals("RED")) {
@@ -77,7 +71,7 @@ public class MyMapMaker implements MapMaker {
         for (Integer integer : stations.keySet()) {
             stationList.add(stations.get(integer));
         }
-            railroadMap = new MyRailRoadMap(routes, stationList, spaces);
+            railroadMap = new MyRailRoadMap(routes, stationList);
             in.close();
         }
         catch (IOException io) {

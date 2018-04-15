@@ -13,6 +13,12 @@ public class MyRailroadBarons implements RailroadBarons {
     private ArrayList<RailroadBaronsObserver> observers=new ArrayList<>();
     private Deck deck;
     private RailroadMap map;
+    public MyRailroadBarons(){
+        players.add(new MyPlayer(Baron.BLUE));
+        players.add(new MyPlayer(Baron.RED));
+        players.add(new MyPlayer(Baron.YELLOW));
+        players.add(new MyPlayer(Baron.GREEN));
+    }
 
     @Override
     public Player getCurrentPlayer() {
@@ -33,10 +39,7 @@ public class MyRailroadBarons implements RailroadBarons {
     public void startAGameWith(RailroadMap map) {
         this.map = map;
         ArrayList<Card> cards = new ArrayList<>();
-        players.add(new MyPlayer(Baron.BLUE));
-        players.add(new MyPlayer(Baron.RED));
-        players.add(new MyPlayer(Baron.YELLOW));
-        players.add(new MyPlayer(Baron.GREEN));
+
         for(int j=0;j<20;j++){
                 cards.add(Card.RED);
                 cards.add(Card.GREEN);
@@ -50,15 +53,14 @@ public class MyRailroadBarons implements RailroadBarons {
         }
         long seed=System.nanoTime();
         Collections.shuffle(cards,new Random(seed));
-        for(Card card:cards){
-            System.out.println(card);
-        }
-        this.deck = new MyDeck(cards);
 
+        this.deck = new MyDeck(cards);
         //players.add(players.size() - 1, getCurrentPlayer());
+        System.out.println(deck.numberOfCardsRemaining());
         Card first = deck.drawACard();
         Card second= deck.drawACard();
-        getCurrentPlayer().startTurn(new MyPair(first,second));
+        Pair pair=new MyPair(first,second);
+        getCurrentPlayer().startTurn(pair);
             for (RailroadBaronsObserver observer:observers){
                 observer.turnStarted(this,getCurrentPlayer());
                // observer.notify();
@@ -68,10 +70,7 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
-        players.add(new MyPlayer(Baron.BLUE));
-        players.add(new MyPlayer(Baron.RED));
-        players.add(new MyPlayer(Baron.YELLOW));
-        players.add(new MyPlayer(Baron.GREEN));
+
         this.map = map;
         this.deck = deck;
     }
@@ -107,8 +106,10 @@ public class MyRailroadBarons implements RailroadBarons {
 
         players.remove(getCurrentPlayer());
         players.add(players.size() , getCurrentPlayer());
-        getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
-
+        Card first = deck.drawACard();
+        Card second= deck.drawACard();
+        Pair pair=new MyPair(first,second);
+        getCurrentPlayer().startTurn(pair);
         for (RailroadBaronsObserver o : observers) {
             o.turnStarted(this, getCurrentPlayer());
         }
