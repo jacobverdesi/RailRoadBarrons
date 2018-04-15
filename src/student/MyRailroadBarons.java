@@ -11,13 +11,11 @@ public class MyRailroadBarons implements RailroadBarons {
 
     private ArrayList<Player> players = new ArrayList<>();
     private ArrayList<RailroadBaronsObserver> observers=new ArrayList<>();
-    private Player currentPlayer;
     private Deck deck;
     private RailroadMap map;
 
     @Override
     public Player getCurrentPlayer() {
-        currentPlayer = players.get(0);
         return players.get(0);
     }
 
@@ -50,15 +48,21 @@ public class MyRailroadBarons implements RailroadBarons {
                 cards.add(Card.PINK);
                 cards.add(Card.WHITE);
         }
-
         long seed=System.nanoTime();
         Collections.shuffle(cards,new Random(seed));
-        this.deck = new MyDeck(cards);
-        System.out.println(observers);
-        for (int i =0; i<4;i++){
-            players.get(i).startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
-           // observers.notifyAll();
+        for(Card card:cards){
+            System.out.println(card);
         }
+        this.deck = new MyDeck(cards);
+
+        //players.add(players.size() - 1, getCurrentPlayer());
+        Card first = deck.drawACard();
+        Card second= deck.drawACard();
+        getCurrentPlayer().startTurn(new MyPair(first,second));
+            for (RailroadBaronsObserver observer:observers){
+                observer.turnStarted(this,getCurrentPlayer());
+               // observer.notify();
+            }
 
     }
 
@@ -84,7 +88,7 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public boolean canCurrentPlayerClaimRoute(int row, int col) {
-        if (currentPlayer.canClaimRoute(map.getRoute(row, col))) {
+        if (getCurrentPlayer().canClaimRoute(map.getRoute(row, col))) {
             return true;
         }
         return false;
@@ -92,19 +96,21 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public void claimRoute(int row, int col) throws RailroadBaronsException {
-        map.getRoute(row, col).claim(currentPlayer.getBaron());
+        map.getRoute(row, col).claim(getCurrentPlayer().getBaron());
     }
 
     @Override
     public void endTurn() {
-        players.remove(currentPlayer);
-        players.add(players.size() - 1, currentPlayer);
         for (RailroadBaronsObserver o : observers) {
-            o.turnEnded(this, currentPlayer);
+            o.turnEnded(this, getCurrentPlayer());
         }
-        currentPlayer = players.get(0);
+
+        players.remove(getCurrentPlayer());
+        players.add(players.size() , getCurrentPlayer());
+        getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
+
         for (RailroadBaronsObserver o : observers) {
-            o.turnStarted(this, currentPlayer);
+            o.turnStarted(this, getCurrentPlayer());
         }
     }
 
@@ -123,7 +129,7 @@ public class MyRailroadBarons implements RailroadBarons {
         }
         int claimedRoutes = 0;
         for (Route r : map.getRoutes()) {
-            if (!r.claim(currentPlayer.getBaron())) {
+            if (!r.claim(getCurrentPlayer().getBaron())) {
                 claimedRoutes++;
             }
         }
