@@ -17,11 +17,12 @@ public class MyRoute implements Route{
         this.baron = Baron.UNCLAIMED;
         tracks = new ArrayList<>();
         if (ort.equals(Orientation.HORIZONTAL)){
-            for (int i = origin.getCol(); i <= dest.getCol(); i++){
+           for (int i = origin.getCol()+1; i <= dest.getCol()-1; i++){
+
                 tracks.add(new MyTrack(ort, origin.getRow(), i, this));
             }
         }else {
-            for (int i = origin.getRow(); i <= dest.getRow(); i++){
+            for (int i = origin.getRow()+1; i <= dest.getRow()-1; i++){
                 tracks.add(new MyTrack(ort, i, origin.getCol(), this));
             }
         }

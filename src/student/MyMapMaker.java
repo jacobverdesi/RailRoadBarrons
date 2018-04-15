@@ -12,7 +12,6 @@ public class MyMapMaker implements MapMaker {
     @Override
     public RailroadMap readMap(InputStream in) {
         RailroadMap railroadMap=null;
-        List<Space> spaces = new ArrayList<>();
         HashMap<Integer, Station> stations = new HashMap<>();
         List<Route> routes = new ArrayList<>();
         try {
@@ -39,14 +38,14 @@ public class MyMapMaker implements MapMaker {
                     }
                 }
                 if (origin.getCol() == dest.getCol()) {
-                    if(origin.getRow()>dest.getRow()) {
+                    if(origin.getRow()<dest.getRow()) {
                         route = new MyRoute(origin, dest, Orientation.VERTICAL);
                     }
                     else {
                         route = new MyRoute(dest,origin, Orientation.VERTICAL);
                     }
                 } else {
-                    if(origin.getCol()>dest.getCol()) {
+                    if(origin.getCol()<dest.getCol()) {
                     route = new MyRoute(origin, dest, Orientation.HORIZONTAL);
                 }
                 else {
@@ -67,11 +66,7 @@ public class MyMapMaker implements MapMaker {
                 routes.add(route);
             }
         }
-        List<Station> stationList = new ArrayList<>();
-        for (Integer integer : stations.keySet()) {
-            stationList.add(stations.get(integer));
-        }
-            railroadMap = new MyRailRoadMap(routes, stationList);
+            railroadMap = new MyRailRoadMap(routes);
             in.close();
         }
         catch (IOException io) {
@@ -113,7 +108,6 @@ public class MyMapMaker implements MapMaker {
                 }
             }
             printWriter.println(origin+" "+dest+" "+route.getBaron());
-
         }
         printWriter.flush();
         printWriter.close();

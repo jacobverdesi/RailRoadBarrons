@@ -15,10 +15,18 @@ public class MyRailRoadMap implements RailroadMap {
     private List<Route> routes, claimed;
     private List<RailroadMapObserver> observers;
 
-    public MyRailRoadMap(List<Route> routes, List<Station> stations) {
+    public MyRailRoadMap(List<Route> routes) {
         this.routes = routes;
         this.claimed = new ArrayList<>();
-        this.stations = stations;
+        this.stations=new ArrayList<>();
+        for (Route route : routes) {
+            if (!stations.contains(route.getOrigin())) {
+                stations.add(route.getDestination());
+            }
+            if (!stations.contains(route.getDestination())) {
+                stations.add(route.getDestination());
+            }
+        }
         spaces = new Space[this.getRows() + 1][this.getCols() + 1];
         for (Route route : routes) {
             Station origin=route.getOrigin();
@@ -26,6 +34,7 @@ public class MyRailRoadMap implements RailroadMap {
             spaces[origin.getRow()][origin.getCol()]=origin;
             spaces[dest.getRow()][dest.getCol()]=dest;
             for (Track track : route.getTracks()) {
+
                 spaces[track.getRow()][track.getCol()] = track;
             }
         }
@@ -54,7 +63,7 @@ public class MyRailRoadMap implements RailroadMap {
                 result = s.getCol();
             }
         }
-        return result;
+        return result+1;
     }
 
     @Override
@@ -93,7 +102,7 @@ public class MyRailRoadMap implements RailroadMap {
                 result = s.getRow();
             }
         }
-        return result;
+        return result+1;
     }
 
     @Override

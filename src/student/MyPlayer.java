@@ -4,6 +4,7 @@ import model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 
 public class MyPlayer implements Player {
 
@@ -20,7 +21,10 @@ public class MyPlayer implements Player {
         this.pieces = 45;
         this.baron = baron;
         hand = new ArrayList<>();
-        hand.add(Card.WILD);
+
+        for (PlayerObserver p : observers){
+            p.playerChanged(this);
+        }
         routes = new ArrayList<>();
         claimedTurn = false;
     }
@@ -61,7 +65,7 @@ public class MyPlayer implements Player {
 
     @Override
     public Pair getLastTwoCards() {
-        return new MyPair(hand.get(hand.size()-1), hand.get(hand.size()-1));
+        return new MyPair(hand.get(hand.size()-2), hand.get(hand.size()-1));
     }
 
     @Override

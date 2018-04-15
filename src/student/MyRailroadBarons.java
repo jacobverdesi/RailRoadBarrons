@@ -56,15 +56,16 @@ public class MyRailroadBarons implements RailroadBarons {
 
         this.deck = new MyDeck(cards);
         //players.add(players.size() - 1, getCurrentPlayer());
-        System.out.println(deck.numberOfCardsRemaining());
         Card first = deck.drawACard();
         Card second= deck.drawACard();
         Pair pair=new MyPair(first,second);
+        players.add(players.size(), getCurrentPlayer());
+        players.remove(getCurrentPlayer());
         getCurrentPlayer().startTurn(pair);
-            for (RailroadBaronsObserver observer:observers){
-                observer.turnStarted(this,getCurrentPlayer());
+        for (RailroadBaronsObserver observer:observers){
+            observer.turnStarted(this,getCurrentPlayer());
                // observer.notify();
-            }
+        }
 
     }
 
@@ -104,8 +105,8 @@ public class MyRailroadBarons implements RailroadBarons {
             o.turnEnded(this, getCurrentPlayer());
         }
 
-        players.remove(getCurrentPlayer());
         players.add(players.size() , getCurrentPlayer());
+        players.remove(getCurrentPlayer());
         Card first = deck.drawACard();
         Card second= deck.drawACard();
         Pair pair=new MyPair(first,second);
