@@ -13,7 +13,7 @@ public class MyPlayer implements Player {
     private ArrayList<Route> routes;
     private ArrayList<PlayerObserver> observers = new ArrayList<>();
     private Pair pair;
-    private ArrayList<Card> hand, dealt;
+    private ArrayList<Card> hand;
     private int pieces;
     private boolean claimedTurn;
 
@@ -86,7 +86,7 @@ public class MyPlayer implements Player {
 
     @Override
     public boolean canClaimRoute(Route route) {
-
+        System.out.println("CanClaimRoute");
         if (route.getBaron().equals(Baron.UNCLAIMED) && pieces >= route.getLength() &&
                 hand.size() >= route.getLength() && !claimedTurn){
             return true;
@@ -96,6 +96,7 @@ public class MyPlayer implements Player {
 
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
+        System.out.println("ClaimRoute");
         Card first = pair.getFirstCard();
         Card second = pair.getSecondCard();
         ArrayList<Card> firstMatches = new ArrayList<>();
