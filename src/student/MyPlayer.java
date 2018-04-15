@@ -110,7 +110,6 @@ public class MyPlayer implements Player {
                 wilds.add(c);
             }
         }
-
         if (firstMatches.size() < secondMatches.size()) {
             if (firstMatches.size() < route.getLength() && wilds.size() > 0) {
                 for (Card h : hand) {

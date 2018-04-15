@@ -34,7 +34,6 @@ public class MyRailRoadMap implements RailroadMap {
             spaces[origin.getRow()][origin.getCol()]=origin;
             spaces[dest.getRow()][dest.getCol()]=dest;
             for (Track track : route.getTracks()) {
-
                 spaces[track.getRow()][track.getCol()] = track;
             }
         }
@@ -107,7 +106,6 @@ public class MyRailRoadMap implements RailroadMap {
 
     @Override
     public Space getSpace(int row, int col) {
-
         return spaces[row][col];
     }
 

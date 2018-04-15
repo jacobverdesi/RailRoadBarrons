@@ -88,15 +88,20 @@ public class MyRailroadBarons implements RailroadBarons {
 
     @Override
     public boolean canCurrentPlayerClaimRoute(int row, int col) {
+        System.out.println("Clicked");
         if (getCurrentPlayer().canClaimRoute(map.getRoute(row, col))) {
+            System.out.println("can claim");
             return true;
         }
+        System.out.println("cant claim");
         return false;
     }
 
     @Override
     public void claimRoute(int row, int col) throws RailroadBaronsException {
+        System.out.println("Claiming");
         map.getRoute(row, col).claim(getCurrentPlayer().getBaron());
+        map.routeClaimed(map.getRoute(row,col));
     }
 
     @Override
@@ -110,6 +115,7 @@ public class MyRailroadBarons implements RailroadBarons {
         Card first = deck.drawACard();
         Card second= deck.drawACard();
         Pair pair=new MyPair(first,second);
+
         getCurrentPlayer().startTurn(pair);
         for (RailroadBaronsObserver o : observers) {
             o.turnStarted(this, getCurrentPlayer());
