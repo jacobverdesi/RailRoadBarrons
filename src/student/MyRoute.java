@@ -18,7 +18,6 @@ public class MyRoute implements Route{
         tracks = new ArrayList<>();
         if (ort.equals(Orientation.HORIZONTAL)){
            for (int i = origin.getCol()+1; i <= dest.getCol()-1; i++){
-
                 tracks.add(new MyTrack(ort, origin.getRow(), i, this));
             }
         }else {

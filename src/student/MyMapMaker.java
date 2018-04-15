@@ -19,24 +19,16 @@ public class MyMapMaker implements MapMaker {
         Boolean isRoutes = false;
         while (scanner.hasNextLine()) {
             String s = scanner.nextLine();
+            String[] split = s.split(" ",4);
             if (s.equals("##ROUTES##")) {
                 isRoutes = true;
             } else if (!isRoutes) {
-                String[] split = s.split(" ");
                 Station station = new MyStation(split[3], Integer.parseInt(split[1]), Integer.parseInt(split[2]));
                 stations.put(Integer.parseInt(split[0]), station);
             } else {
-                String[] split = s.split(" ");
-                Station origin = new MyStation(null, 0, 0);
-                Station dest = new MyStation(null, 0, 0);
+                Station origin = stations.get(Integer.parseInt(split[0]));
+                Station dest =  stations.get(Integer.parseInt(split[1]));
                 Route route;
-                for (Integer integer : stations.keySet()) {
-                    if (integer == Integer.parseInt(split[0])) {
-                        origin = stations.get(integer);
-                    } else if (integer == Integer.parseInt(split[1])) {
-                        dest = stations.get(integer);
-                    }
-                }
                 if (origin.getCol() == dest.getCol()) {
                     if(origin.getRow()<dest.getRow()) {
                         route = new MyRoute(origin, dest, Orientation.VERTICAL);
@@ -46,14 +38,16 @@ public class MyMapMaker implements MapMaker {
                     }
                 } else {
                     if(origin.getCol()<dest.getCol()) {
-                    route = new MyRoute(origin, dest, Orientation.HORIZONTAL);
+                        route = new MyRoute(origin, dest, Orientation.HORIZONTAL);
+                    }
+                    else {
+                            route = new MyRoute(dest,origin, Orientation.HORIZONTAL);
+                        }
                 }
-                else {
-                    route = new MyRoute(dest,origin, Orientation.HORIZONTAL);
-                }
-                }
+
+
                 if (!split[2].equals("UNCLAIMED")) {
-                    if (split[2].equals("RED")) {
+                    if (split[2].equals("RED")){
                         route.claim(Baron.RED);
                     } else if (split[2].equals("YELLOW")) {
                         route.claim(Baron.YELLOW);
@@ -84,12 +78,11 @@ public class MyMapMaker implements MapMaker {
         for (Route route : routes) {
             if (!stations.containsValue(route.getOrigin())) {
                 stations.put(counter, route.getOrigin());
-                counter++;
             }
            else if (!stations.containsValue(route.getDestination())) {
                 stations.put(counter, route.getDestination());
-                counter++;
             }
+            counter++;
         }
         for (Integer integer : stations.keySet()) {
             Station station = stations.get(integer);
@@ -100,10 +93,10 @@ public class MyMapMaker implements MapMaker {
             int origin=0;
             int dest=0;
             for(Integer integer:stations.keySet()){
-                if(stations.get(integer)==route.getOrigin()){
+                if(stations.get(integer).equals(route.getOrigin())){
                     origin=integer;
                 }
-                else if(stations.get(integer)==route.getDestination()){
+                else if(stations.get(integer).equals(route.getDestination())){
                     dest=integer;
                 }
             }

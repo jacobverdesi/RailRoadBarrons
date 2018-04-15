@@ -9,11 +9,10 @@ import java.util.Collection;
 
 public class TESTMYMAP {
     public static void main(String[] args) throws IOException{
-        File initialFile = new File("maps/20x25Asia.rbmap");
+        File initialFile = new File("maps/simple.rbmap");
         InputStream targetStream = new FileInputStream(initialFile);
         MyMapMaker myMapMaker=new MyMapMaker();
         RailroadMap map= myMapMaker.readMap(targetStream);
-
         OutputStream outputStream=System.out;
         myMapMaker.writeMap(map,outputStream);
     }

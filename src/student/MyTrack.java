@@ -44,10 +44,7 @@ public class MyTrack implements Track {
 
     @Override
     public boolean collocated(Space other) {
-        if (other.getCol() == this.col && other.getRow() == this.row){
-            return true;
-        }
-        return false;
+      return other.getCol() == this.col && other.getRow() == this.row;
     }
 
     @Override
