@@ -87,67 +87,133 @@ public class MyPlayer implements Player {
     @Override
     public boolean canClaimRoute(Route route) {
         System.out.println("CanClaimRoute");
-        if (route.getBaron().equals(Baron.UNCLAIMED) && pieces >= route.getLength() &&
-                hand.size() >= route.getLength() && !claimedTurn){
-            return true;
+       return pieces >= route.getLength() && hasEnoughCards(route.getLength())&& !claimedTurn;
+
+    }
+    private boolean hasEnoughCards(int size){
+        if(getNumColorCards(Card.WILD)>0) {
+            size--;
+        }
+        for (Card card:Card.values()){
+            if(!card.equals(Card.NONE)&&!card.equals(Card.BACK)&&!card.equals(Card.WILD)){
+               if (getNumColorCards(card)>=size){
+                   return true;
+               }
+            }
         }
         return false;
+
+    }
+    private int getNumColorCards(Card card){
+        int total=0;
+        for(Card card1:hand){
+            if(card1.equals(card)){
+                total++;
+            }
+        }
+        return total;
+    }
+    private ArrayList<Card> getEnoughCards(int size){
+        ArrayList<Card> cards=new ArrayList<>();
+        //see if enough without wild
+        for(Card card:Card.values()){
+            if(!card.equals(Card.NONE)&&!card.equals(Card.BACK)&&!card.equals(Card.WILD)){
+                if (getNumColorCards(card)==size){
+                    for(int i=0;i<size;i++){
+                        cards.add(card);
+                    }
+                    return cards;
+                }
+            }
+        }
+        for(Card card:Card.values()){
+            if(!card.equals(Card.NONE)&&!card.equals(Card.BACK)&&!card.equals(Card.WILD)){
+                if (getNumColorCards(card)>size){
+                    for(int i=0;i<size;i++){
+                        cards.add(card);
+                    }
+                    return cards;
+                }
+            }
+        }
+        for(Card card:Card.values()){
+            if(!card.equals(Card.NONE)&&!card.equals(Card.BACK)&&!card.equals(Card.WILD)){
+                if (getNumColorCards(card)==size-1&&getNumColorCards(Card.WILD)>0){
+                    for(int i=0;i<size-1;i++){
+                        cards.add(card);
+                    }
+                    cards.add(Card.WILD);
+                    return cards;
+                }
+            }
+        }
+
+
+    return cards;
     }
 
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
         System.out.println("ClaimRoute");
-        Card first = pair.getFirstCard();
-        Card second = pair.getSecondCard();
-        ArrayList<Card> firstMatches = new ArrayList<>();
-        ArrayList<Card> secondMatches = new ArrayList<>();
-        ArrayList<Card> wilds = new ArrayList<>();
-        for (Card c : hand) {
-            if (c.equals(first)) {
-                firstMatches.add(c);
-            } else if (c.equals(second)) {
-                secondMatches.add(c);
-            } else if (c.equals(Card.WILD)) {
-                wilds.add(c);
+        if(canClaimRoute(route)){
+//        Card first = pair.getFirstCard();
+//        Card second = pair.getSecondCard();
+//            ArrayList<Card> firstMatches = new ArrayList<>();
+//            ArrayList<Card> secondMatches = new ArrayList<>();
+//            ArrayList<Card> wilds = new ArrayList<>();
+//        for (Card c : hand) {
+//            if (c.equals(first)) {
+//                firstMatches.add(c);
+//            } else if (c.equals(second)) {
+//                secondMatches.add(c);
+//            } else if (c.equals(Card.WILD)) {
+//                wilds.add(c);
+//            }
+//        }
+//        if (firstMatches.size() < secondMatches.size()) {
+//            if (firstMatches.size() < route.getLength() && wilds.size() > 0) {
+//                for (Card h : hand) {
+//                    if (h.equals(Card.WILD)) {
+//                        hand.remove(h);
+//                    }
+//                }
+//            }
+//            for (Card c : firstMatches) {
+//                for (Card h : hand) {
+//                    if (c.equals(h)) {
+//                        hand.remove(h);
+//                    }
+//                }
+//            }
+//        } else {
+//            if (secondMatches.size() < route.getLength() && wilds.size() > 0) {
+//                for (Card h : hand) {
+//                    if (h.equals(Card.WILD)) {
+//                        hand.remove(h);
+//                    }
+//                }
+//                for (Card c : secondMatches) {
+//                    for (Card h : hand) {
+//                        if (c.equals(h)) {
+//                            hand.remove(h);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+            System.out.println(hand);
+
+            System.out.println(hand);
+            for (PlayerObserver p : observers) {
+                p.playerChanged(this);
             }
-        }
-        if (firstMatches.size() < secondMatches.size()) {
-            if (firstMatches.size() < route.getLength() && wilds.size() > 0) {
-                for (Card h : hand) {
-                    if (h.equals(Card.WILD)) {
-                        hand.remove(h);
-                    }
-                }
-            }
-            for (Card c : firstMatches) {
-                for (Card h : hand) {
-                    if (c.equals(h)) {
-                        hand.remove(h);
-                    }
-                }
-            }
-        } else {
-            if (secondMatches.size() < route.getLength() && wilds.size() > 0) {
-                for (Card h : hand) {
-                    if (h.equals(Card.WILD)) {
-                        hand.remove(h);
-                    }
-                }
-                for (Card c : secondMatches) {
-                    for (Card h : hand) {
-                        if (c.equals(h)) {
-                            hand.remove(h);
-                        }
-                    }
-                }
-            }
-            claimedTurn = true;
+           // claimedTurn = true;
             route.claim(baron);
             routes.add(route);
             score += route.getPointValue();
-            for (PlayerObserver p : observers){
-                p.playerChanged(this);
-            }
+        }
+        else {
+            throw new RailroadBaronsException("Cannot claim route");
         }
     }
 

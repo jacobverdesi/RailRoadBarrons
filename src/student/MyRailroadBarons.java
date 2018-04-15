@@ -96,7 +96,7 @@ public class MyRailroadBarons implements RailroadBarons {
     @Override
     public boolean canCurrentPlayerClaimRoute(int row, int col) {
         System.out.println("Clicked");
-       return (getCurrentPlayer().canClaimRoute(map.getRoute(row, col))) ;
+       return (getCurrentPlayer().canClaimRoute(map.getRoute(row, col))&&map.getRoute(row, col).getBaron().equals(Baron.UNCLAIMED)) ;
 
 
     }
