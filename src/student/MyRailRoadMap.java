@@ -95,11 +95,12 @@ public class MyRailRoadMap implements RailroadMap {
      */
     @Override
     public int getLengthOfShortestUnclaimedRoute() {
-        int result = routes.get(0).getLength();
+        int result = 1000;
         for (Route r : routes) {
-            if (r.getLength() < result) {
-                result = r.getLength();
-            }
+                if (r.getLength() < result&&r.claim(Baron.UNCLAIMED)) {
+                    result = r.getLength();
+                }
+
         }
         return result;
     }
