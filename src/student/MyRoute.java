@@ -62,6 +62,7 @@ public class MyRoute implements Route{
         }
     }
     /**
+     *
      * Returns the {@linkplain Baron} that has claimed this route. Note that
      * this route may be {@linkplain Baron#UNCLAIMED unclaimed}.
      *
