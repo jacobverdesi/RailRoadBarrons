@@ -76,6 +76,7 @@ public class MyRoute implements Route{
      * Returns the {@linkplain Station station} at the end of this route. The
      * destination must be directly south of or to the east of the origin.
      * @return The {@link Station} at the end of this route.
+     *
      */
     @Override
     public Station getDestination() {
