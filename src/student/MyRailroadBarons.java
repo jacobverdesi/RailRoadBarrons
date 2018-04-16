@@ -89,17 +89,8 @@ public class MyRailroadBarons implements RailroadBarons {
             player.reset();
         }
         this.map = map;
-        ArrayList<Card> cards = new ArrayList<>();
-        for (int j = 0; j < 20; j++) {
-            for (Card card : Card.values()) {
-                if (!card.equals(Card.NONE) && !card.equals(Card.BACK)) {
-                    cards.add(card);
-                }
-            }
-        }
-        long seed = System.nanoTime();
-        Collections.shuffle(cards, new Random(seed));
-        this.deck = new MyDeck(cards);
+
+        this.deck = new MyDeck();
         dealCards();
         Card first = deck.drawACard();
         Card second = deck.drawACard();
