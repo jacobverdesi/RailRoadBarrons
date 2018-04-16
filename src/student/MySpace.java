@@ -3,6 +3,8 @@ package student;
 import model.Space;
 /**
  * Represents a space on the Railroad Barons map.
+ * @Author Jacob Verdesi
+ * @Author Andrew Yankowsky
  */
 public class MySpace implements Space{
 

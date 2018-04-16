@@ -4,6 +4,8 @@ import model.*;
 /**
  * Represents a track segment on the map. Tracks combine to form
  * {@linkplain Route routes}.
+ * @Author Jacob Verdesi
+ * @Author Andrew Yankowsky
  */
 public class MyTrack implements Track {
     private Baron baron;

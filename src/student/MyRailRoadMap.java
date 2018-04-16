@@ -10,14 +10,14 @@ import java.util.List;
  * Represents a Railroad Barons map, which consists of empty
  * {@linkplain Space spaces}, {@linkplain Station stations},
  * {@linkplain Track tracks}, and {@linkplain Route routes}.
+ * @Author Jacob Verdesi
+ * @Author Andrew Yankowsky
  */
 public class MyRailRoadMap implements RailroadMap {
-
     private Space[][] spaces;
     private List<Station> stations;
     private List<Route> routes;
     private List<RailroadMapObserver> observers;
-
     /**
      * initilizes all the routs and creates stations
      * @param routes

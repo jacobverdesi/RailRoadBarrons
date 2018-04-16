@@ -8,6 +8,8 @@ import java.util.Random;
 /**
  * The interface for a class that represents a player in a
  * {@linkplain RailroadBarons Railroad Barons} game.
+ * @Author Jacob Verdesi
+ * @Author Andrew Yankowsky
  */
 public class MyPlayer implements Player {
 
@@ -20,6 +22,10 @@ public class MyPlayer implements Player {
     private int pieces;
     private boolean claimedTurn;
 
+    /**
+     * Creates a new player and initilize it
+     * @param baron
+     */
     public MyPlayer(Baron baron){
         this.pieces = 45;
         this.baron = baron;

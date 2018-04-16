@@ -12,6 +12,8 @@ import java.util.List;
  * {@linkplain Orientation#VERTICAL vertical}, and the origin station must be
  * north of or to the west of the destination station (this simplifies some of
  * the route methods).
+ * @Author Jacob Verdesi
+ * @Author Andrew Yankowsky
  */
 public class MyRoute implements Route{
 
