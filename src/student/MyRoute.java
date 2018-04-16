@@ -35,11 +35,11 @@ public class MyRoute implements Route{
         tracks = new ArrayList<>();
         if (ort.equals(Orientation.HORIZONTAL)){
            for (int i = origin.getCol()+1; i <= dest.getCol()-1; i++){
-                tracks.add(new MyTrack(ort, origin.getRow(), i, this));
+                tracks.add(new MyTrack(ort,new MySpace( origin.getRow(), i), this));
             }
         }else {
             for (int i = origin.getRow()+1; i <= dest.getRow()-1; i++){
-                tracks.add(new MyTrack(ort, i, origin.getCol(), this));
+                tracks.add(new MyTrack(ort, new MySpace(i, origin.getCol()), this));
             }
         }
     }

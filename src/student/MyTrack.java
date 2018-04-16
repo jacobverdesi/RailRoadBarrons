@@ -11,20 +11,18 @@ public class MyTrack implements Track {
     private Baron baron;
     private Orientation ort;
     private Route route;
-    private int row, col;
+    private Space space;
     /**
      * creates a track with a route and orientaton
      * @param ort
-     * @param row
-     * @param col
+     * @param space
      * @param route
      */
-    public MyTrack(Orientation ort, int row, int col, Route route){
+    public MyTrack(Orientation ort, Space space, Route route){
         this.baron = route.getBaron();
         this.ort = ort;
         this.route = route;
-        this.row = row;
-        this.col = col;
+        this.space=space;
     }
 
     /**
@@ -69,7 +67,7 @@ public class MyTrack implements Track {
      */
     @Override
     public int getCol() {
-        return col;
+        return space.getCol();
     }
     /**
      * Returns the row of the space's location in the map.
@@ -77,7 +75,7 @@ public class MyTrack implements Track {
      */
     @Override
     public int getRow() {
-        return row;
+        return space.getRow();
     }
 
     /**
@@ -90,7 +88,7 @@ public class MyTrack implements Track {
      */
     @Override
     public boolean collocated(Space other) {
-      return other.getCol() == this.col && other.getRow() == this.row;
+      return other.getCol() == getCol() && other.getRow() == getRow();
     }
 
     /**
@@ -99,6 +97,6 @@ public class MyTrack implements Track {
      */
     @Override
     public String toString() {
-        return " Row: "+row+" Col: "+col +" ";
+        return " Row: "+getRow()+" Col: "+getCol() +" ";
     }
 }
