@@ -85,6 +85,9 @@ public class MyRailroadBarons implements RailroadBarons {
      */
     @Override
     public void startAGameWith(RailroadMap map) {
+        for (Player player:players){
+            player.reset();
+        }
         this.map = map;
         ArrayList<Card> cards = new ArrayList<>();
         for (int j = 0; j < 20; j++) {
@@ -137,6 +140,9 @@ public class MyRailroadBarons implements RailroadBarons {
      */
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
+        for (Player player:players){
+            player.reset();
+        }
         this.map = map;
         this.deck = deck;
         dealCards();
