@@ -10,6 +10,8 @@ import model.RailroadBarons;
  * game are dealt to each {@linkplain Player} in pairs. This class is used to
  * hold one such pair of {@linkplain Card cards}. Note that, if the deck is
  * empty, one or both cards may have a value of "{@link Card#NONE none}."
+ * @Author Jacob Verdesi
+ * @Author Andrew Yankowsky
  */
 public class MyPair implements Pair {
     private Card first, second;

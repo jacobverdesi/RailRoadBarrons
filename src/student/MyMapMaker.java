@@ -17,6 +17,8 @@ import java.util.*;
  *     <li>&lt;origin station number&gt; &lt;destination station number&gt;
  *     &lt;owner&gt;</li>
  * </ol>
+ * @Author Jacob Verdesi
+ * @Author Andrew Yankowsky
  */
 public class MyMapMaker implements MapMaker {
     /**
