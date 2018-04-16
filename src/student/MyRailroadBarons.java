@@ -71,7 +71,6 @@ public class MyRailroadBarons implements RailroadBarons {
      * specified {@linkplain RailroadMap map} and a default {@linkplain Deck
      * deck of cards}. If a game is currently in progress, the progress is
      * lost. There is no warning!
-     *
      * By default, a new game begins with:
      * <ul>
      *     <li>A default deck that contains 20 of each color of card and 20
@@ -89,29 +88,19 @@ public class MyRailroadBarons implements RailroadBarons {
             player.reset();
         }
         this.map = map;
-
         this.deck = new MyDeck();
         dealCards();
-        Card first = deck.drawACard();
-        Card second = deck.drawACard();
-        Pair pair = new MyPair(first, second);
-        players.add(players.size(), getCurrentPlayer());
-        players.remove(getCurrentPlayer());
-        getCurrentPlayer().startTurn(pair);
+        getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
         for (RailroadBaronsObserver observer : observers) {
             observer.turnStarted(this, getCurrentPlayer());
         }
     }
-
     /**
      * deals 2 cards to players
      */
     private void dealCards() {
         for (Player player : players) {
-            Card first = deck.drawACard();
-            Card second = deck.drawACard();
-            Pair pair = new MyPair(first, second);
-            player.startTurn(pair);
+            getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
         }
     }
     /**
@@ -137,11 +126,7 @@ public class MyRailroadBarons implements RailroadBarons {
         this.map = map;
         this.deck = deck;
         dealCards();
-        players.add(players.size() - 1, getCurrentPlayer());
-        Card first = deck.drawACard();
-        Card second = deck.drawACard();
-        Pair pair = new MyPair(first, second);
-        getCurrentPlayer().startTurn(pair);
+        getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
         for (RailroadBaronsObserver observer : observers) {
             observer.turnStarted(this, getCurrentPlayer());
         }
@@ -216,10 +201,8 @@ public class MyRailroadBarons implements RailroadBarons {
         players.remove(getCurrentPlayer());
         if (!gameIsOver()) {
             if (deck.numberOfCardsRemaining() >= 2) {
-                Card first = deck.drawACard();
-                Card second = deck.drawACard();
-                Pair pair = new MyPair(first, second);
-                getCurrentPlayer().startTurn(pair);
+
+                getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
             } else {
                 getCurrentPlayer().startTurn(new MyPair(Card.NONE, Card.NONE));
             }

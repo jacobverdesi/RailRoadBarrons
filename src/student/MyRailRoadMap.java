@@ -100,7 +100,6 @@ public class MyRailRoadMap implements RailroadMap {
                 if (r.getLength() < result&&r.claim(Baron.UNCLAIMED)) {
                     result = r.getLength();
                 }
-
         }
         return result;
     }
