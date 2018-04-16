@@ -15,10 +15,10 @@ public class MyPlayer implements Player {
 
     private Baron baron;
     private int score;
-    private ArrayList<Route> routes;
+    private ArrayList<Route> routes=new ArrayList<>();
     private ArrayList<PlayerObserver> observers = new ArrayList<>();
     private Pair pair;
-    private ArrayList<Card> hand;
+    private ArrayList<Card> hand=new ArrayList<>();
     private int pieces;
     private boolean claimedTurn;
 
@@ -29,8 +29,6 @@ public class MyPlayer implements Player {
     public MyPlayer(Baron baron){
         this.pieces = 45;
         this.baron = baron;
-        hand = new ArrayList<>();
-        routes = new ArrayList<>();
         claimedTurn = false;
         for (PlayerObserver p : observers){
             p.playerChanged(this);
@@ -118,7 +116,7 @@ public class MyPlayer implements Player {
      */
     @Override
     public Pair getLastTwoCards() {
-        return new MyPair(pair.getFirstCard(), pair.getSecondCard());
+        return pair;
     }
     /**
      * Returns the number of the specific kind of {@linkplain Card card} that
@@ -178,12 +176,12 @@ public class MyPlayer implements Player {
      * @return
      */
     private boolean hasEnoughCards(int size){
-        if(getNumColorCards(Card.WILD)>0) {
+        if(countCardsInHand(Card.WILD)>0) {
             size--;
         }
         for (Card card:Card.values()){
             if(!card.equals(Card.NONE)&&!card.equals(Card.BACK)&&!card.equals(Card.WILD)){
-               if (getNumColorCards(card)>=size){
+               if (countCardsInHand(card)>=size){
                    return true;
                }
             }
@@ -192,20 +190,6 @@ public class MyPlayer implements Player {
 
     }
 
-    /**
-     * gets number of colored cards
-     * @param card
-     * @return
-     */
-    private int getNumColorCards(Card card){
-        int total=0;
-        for(Card card1:hand){
-            if(card1.equals(card)){
-                total++;
-            }
-        }
-        return total;
-    }
 
     /**
      * gets the cards to be used when claiming
@@ -217,7 +201,7 @@ public class MyPlayer implements Player {
         //see if enough without wild
         for(Card card:Card.values()){
             if(!card.equals(Card.NONE)&&!card.equals(Card.BACK)&&!card.equals(Card.WILD)){
-                if (getNumColorCards(card)==size){
+                if (countCardsInHand(card)==size){
                     for(int i=0;i<size;i++){
                         cards.add(card);
                     }
@@ -227,7 +211,7 @@ public class MyPlayer implements Player {
         }
         for(Card card:Card.values()){
             if(!card.equals(Card.NONE)&&!card.equals(Card.BACK)&&!card.equals(Card.WILD)){
-                if (getNumColorCards(card)>size){
+                if (countCardsInHand(card)>size){
                     for(int i=0;i<size;i++){
                         cards.add(card);
                     }
@@ -237,7 +221,7 @@ public class MyPlayer implements Player {
         }
         for(Card card:Card.values()){
             if(!card.equals(Card.NONE)&&!card.equals(Card.BACK)&&!card.equals(Card.WILD)){
-                if (getNumColorCards(card)==size-1&&getNumColorCards(Card.WILD)>0){
+                if (countCardsInHand(card)==size-1&&countCardsInHand(Card.WILD)>0){
                     for(int i=0;i<size-1;i++){
                         cards.add(card);
                     }
@@ -270,7 +254,10 @@ public class MyPlayer implements Player {
      */
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
-        if(canClaimRoute(route)){
+        if(claimedTurn){
+            throw new RailroadBaronsException("Already Claimed route");
+        }
+        else if(canClaimRoute(route)){
             ArrayList<Card> cardArrayList=getEnoughCards(route.getLength());
             for(Card card:cardArrayList){
                 hand.remove(card);
