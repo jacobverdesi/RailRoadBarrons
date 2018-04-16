@@ -85,7 +85,6 @@ public class MyRailroadBarons implements RailroadBarons {
      */
     @Override
     public void startAGameWith(RailroadMap map) {
-
         this.map = map;
         ArrayList<Card> cards = new ArrayList<>();
         for (int j = 0; j < 20; j++) {
@@ -199,9 +198,14 @@ public class MyRailroadBarons implements RailroadBarons {
      */
     @Override
     public void claimRoute(int row, int col) throws RailroadBaronsException {
-        map.getRoute(row, col).claim(getCurrentPlayer().getBaron());
-        map.routeClaimed(map.getRoute(row, col));
-        getCurrentPlayer().claimRoute(map.getRoute(row, col));
+        if(getCurrentPlayer().canClaimRoute(map.getRoute(row,col))) {
+            map.getRoute(row, col).claim(getCurrentPlayer().getBaron());
+            map.routeClaimed(map.getRoute(row, col));
+            getCurrentPlayer().claimRoute(map.getRoute(row, col));
+        }
+        else{
+            throw new RailroadBaronsException("Cannot claim route");
+        }
     }
     /**
      * Called when the current {@linkplain Player player} ends their turn.
@@ -211,7 +215,6 @@ public class MyRailroadBarons implements RailroadBarons {
         for (RailroadBaronsObserver o : observers) {
             o.turnEnded(this, getCurrentPlayer());
         }
-
         players.add(players.size(), getCurrentPlayer());
         players.remove(getCurrentPlayer());
         if (!gameIsOver()) {
