@@ -6,18 +6,24 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+/**
+ * Represents a Railroad Barons map, which consists of empty
+ * {@linkplain Space spaces}, {@linkplain Station stations},
+ * {@linkplain Track tracks}, and {@linkplain Route routes}.
+ */
 public class MyRailRoadMap implements RailroadMap {
 
     private Space[][] spaces;
     private List<Station> stations;
-    private List<Track> tracks;
-    private List<Route> routes, claimed;
+    private List<Route> routes;
     private List<RailroadMapObserver> observers;
 
+    /**
+     * initilizes all the routs and creates stations
+     * @param routes
+     */
     public MyRailRoadMap(List<Route> routes) {
         this.routes = routes;
-        this.claimed = new ArrayList<>();
         this.stations=new ArrayList<>();
         for (Route route : routes) {
             if (!stations.contains(route.getOrigin())) {
@@ -111,7 +117,6 @@ public class MyRailRoadMap implements RailroadMap {
 
     @Override
     public void routeClaimed(Route route) {
-        claimed.add(route);
         for (RailroadMapObserver o : observers) {
             o.routeClaimed(this, route);
         }
