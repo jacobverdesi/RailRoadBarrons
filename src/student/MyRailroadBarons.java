@@ -81,8 +81,6 @@ public class MyRailroadBarons implements RailroadBarons {
         Card first = deck.drawACard();
         Card second = deck.drawACard();
         Pair pair = new MyPair(first, second);
-        players.add(players.size(), getCurrentPlayer());
-        players.remove(getCurrentPlayer());
         getCurrentPlayer().startTurn(pair);
         for (RailroadBaronsObserver observer : observers) {
             observer.turnStarted(this, getCurrentPlayer());
@@ -128,7 +126,6 @@ public class MyRailroadBarons implements RailroadBarons {
             } else {
                 getCurrentPlayer().startTurn(new MyPair(Card.NONE, Card.NONE));
             }
-
             for (RailroadBaronsObserver o : observers) {
                 o.turnStarted(this, getCurrentPlayer());
             }
