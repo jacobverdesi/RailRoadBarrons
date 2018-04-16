@@ -146,29 +146,7 @@ public class MyPlayer implements Player {
     public int getNumberOfPieces() {
         return pieces;
     }
-    /**
-     * Returns true iff the following conditions are true:
-     *
-     * <ul>
-     *     <li>The {@linkplain Route route} is not already claimed by this or
-     *     some other {@linkplain Baron baron}.</li>
-     *     <li>The player has not already claimed a route this turn (players
-     *     are limited to one claim per turn).</li>
-     *     <li>The player has enough {@linkplain Card cards} (including ONE
-     *     {@linkplain Card#WILD wild card, if necessary}) to claim the
-     *     route.</li>
-     *     <li>The player has enough train pieces to claim the route.</li>
-     * </ul>
-     *
-     * @param route The {@link Route} being tested to determine whether or not
-     *              the player is able to claim it.
-     * @return True if the player is able to claim the specified
-     * {@link Route}, and false otherwise.
-     */
-    @Override
-    public boolean canClaimRoute(Route route) {
-       return pieces >= route.getLength() && hasEnoughCards(route.getLength())&& !claimedTurn;
-    }
+
 
     /**
      * gets if there are enough cards to play
@@ -233,6 +211,29 @@ public class MyPlayer implements Player {
     return cards;
     }
     /**
+     * Returns true iff the following conditions are true:
+     *
+     * <ul>
+     *     <li>The {@linkplain Route route} is not already claimed by this or
+     *     some other {@linkplain Baron baron}.</li>
+     *     <li>The player has not already claimed a route this turn (players
+     *     are limited to one claim per turn).</li>
+     *     <li>The player has enough {@linkplain Card cards} (including ONE
+     *     {@linkplain Card#WILD wild card, if necessary}) to claim the
+     *     route.</li>
+     *     <li>The player has enough train pieces to claim the route.</li>
+     * </ul>
+     *
+     * @param route The {@link Route} being tested to determine whether or not
+     *              the player is able to claim it.
+     * @return True if the player is able to claim the specified
+     * {@link Route}, and false otherwise.
+     */
+    @Override
+    public boolean canClaimRoute(Route route) {
+        return pieces >= route.getLength() && hasEnoughCards(route.getLength())&& !claimedTurn;
+    }
+    /**
      * Claims the given {@linkplain Route route} on behalf of this player's
      * {@linkplain Baron Railroad Baron}. It is possible that the player has
      * enough cards in hand to claim the route by using different
@@ -254,10 +255,7 @@ public class MyPlayer implements Player {
      */
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
-        if(claimedTurn){
-            throw new RailroadBaronsException("Already Claimed route");
-        }
-        else if(canClaimRoute(route)){
+      if(canClaimRoute(route)){
             ArrayList<Card> cardArrayList=getEnoughCards(route.getLength());
             for(Card card:cardArrayList){
                 hand.remove(card);
@@ -271,7 +269,6 @@ public class MyPlayer implements Player {
                 p.playerChanged(this);
             }
         }
-
         else {
             throw new RailroadBaronsException("Cannot claim route");
         }
