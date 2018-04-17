@@ -47,7 +47,7 @@ public class MyMapMaker implements MapMaker {
             if (s.equals("##ROUTES##")) {
                 isRoutes = true;
             } else if (!isRoutes) {
-                Station station = new MyStation(split[3], Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+                Station station = new MyStation(split[3], new MySpace(Integer.parseInt(split[1]), Integer.parseInt(split[2])));
                 stations.put(Integer.parseInt(split[0]), station);
             } else {
                 Station origin = stations.get(Integer.parseInt(split[0]));

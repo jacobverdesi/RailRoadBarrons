@@ -16,16 +16,25 @@ import java.util.Random;
  */
 public class MyDeck implements Deck{
 
-    private ArrayList<Card> deck, drawn;
+    private ArrayList<Card> deck=new ArrayList<>();
+    private ArrayList<Card>drawn=new ArrayList<>();
 
     /**
      * creates a deck with the cards
      * @param deck
      */
-    public MyDeck(List<Card> deck){
-        this.deck = new ArrayList<>();
-        this.deck.addAll(deck);
-        drawn = new ArrayList<>();
+    public MyDeck(){
+
+        for (int j = 0; j < 20; j++) {
+            for (Card card : Card.values()) {
+                if (!card.equals(Card.NONE) && !card.equals(Card.BACK)) {
+                    deck.add(card);
+                }
+            }
+        }
+        long seed = System.nanoTime();
+        Collections.shuffle(deck, new Random(seed));
+
     }
     /**
      * Draws the next {@linkplain Card card} from the "top" of the deck.

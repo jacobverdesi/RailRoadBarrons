@@ -35,15 +35,16 @@ public class MyRoute implements Route{
         tracks = new ArrayList<>();
         if (ort.equals(Orientation.HORIZONTAL)){
            for (int i = origin.getCol()+1; i <= dest.getCol()-1; i++){
-                tracks.add(new MyTrack(ort, origin.getRow(), i, this));
+                tracks.add(new MyTrack(ort,new MySpace( origin.getRow(), i), this));
             }
         }else {
             for (int i = origin.getRow()+1; i <= dest.getRow()-1; i++){
-                tracks.add(new MyTrack(ort, i, origin.getCol(), this));
+                tracks.add(new MyTrack(ort, new MySpace(i, origin.getCol()), this));
             }
         }
     }
     /**
+     *
      * Attempts to claim the route on behalf of the specified
      * {@linkplain Baron}. Only unclaimed routes may be claimed.
      *
@@ -61,6 +62,7 @@ public class MyRoute implements Route{
         }
     }
     /**
+     *
      * Returns the {@linkplain Baron} that has claimed this route. Note that
      * this route may be {@linkplain Baron#UNCLAIMED unclaimed}.
      *
@@ -73,7 +75,6 @@ public class MyRoute implements Route{
     /**
      * Returns the {@linkplain Station station} at the end of this route. The
      * destination must be directly south of or to the east of the origin.
-     *
      * @return The {@link Station} at the end of this route.
      */
     @Override

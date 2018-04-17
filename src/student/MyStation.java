@@ -11,17 +11,15 @@ import model.Station;
  */
 public class MyStation implements Station {
 
-    private int row, col;
+    private Space space;
     private String name;
     /**
      * creates a new station
      * @param name
-     * @param row
-     * @param col
+     * @param space
      */
-    public MyStation(String name, int row, int col) {
-        this.row = row;
-        this.col = col;
+    public MyStation(String name,Space space) {
+        this.space=space;
         this.name = name;
     }
     /**
@@ -39,7 +37,7 @@ public class MyStation implements Station {
      */
     @Override
     public int getRow() {
-        return row;
+        return space.getRow();
     }
     /**
      * Returns the column of the space's location in the map.
@@ -48,7 +46,7 @@ public class MyStation implements Station {
      */
     @Override
     public int getCol() {
-        return col;
+        return space.getCol();
     }
     /**
      * Returns true if the other space is occupying the same physical location
@@ -62,7 +60,7 @@ public class MyStation implements Station {
      */
     @Override
     public boolean collocated(Space other) {
-        return other.getCol() == this.col && other.getRow() == this.row;
+        return other.getCol() == getCol() && other.getRow() == getRow();
     }
     /**
      * toString
@@ -70,6 +68,6 @@ public class MyStation implements Station {
      */
     @Override
     public String toString() {
-        return "Name: " + name + " Row: " + row + " Col: " + col;
+        return "Name: " + name + " Row: " + getRow() + " Col: " + getCol();
     }
 }
