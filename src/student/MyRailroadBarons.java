@@ -71,6 +71,7 @@ public class MyRailroadBarons implements RailroadBarons {
      * specified {@linkplain RailroadMap map} and a default {@linkplain Deck
      * deck of cards}. If a game is currently in progress, the progress is
      * lost. There is no warning!
+     *
      * By default, a new game begins with:
      * <ul>
      *     <li>A default deck that contains 20 of each color of card and 20
@@ -95,12 +96,16 @@ public class MyRailroadBarons implements RailroadBarons {
             observer.turnStarted(this, getCurrentPlayer());
         }
     }
+
     /**
      * deals 2 cards to players
      */
     private void dealCards() {
         for (Player player : players) {
-            getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
+            Card first = deck.drawACard();
+            Card second = deck.drawACard();
+            Pair pair = new MyPair(first, second);
+            player.startTurn(pair);
         }
     }
     /**
@@ -201,7 +206,6 @@ public class MyRailroadBarons implements RailroadBarons {
         players.remove(getCurrentPlayer());
         if (!gameIsOver()) {
             if (deck.numberOfCardsRemaining() >= 2) {
-
                 getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
             } else {
                 getCurrentPlayer().startTurn(new MyPair(Card.NONE, Card.NONE));
