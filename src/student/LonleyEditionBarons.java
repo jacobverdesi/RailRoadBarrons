@@ -95,28 +95,13 @@ public class LonleyEditionBarons implements RailroadBarons {
      */
     @Override
     public void startAGameWith(RailroadMap map) {
-        for (Player player : players) {
+        for (Player player:players){
             player.reset();
         }
         this.map = map;
-        ArrayList<Card> cards = new ArrayList<>();
-        for (int j = 0; j < 20; j++) {
-            for (Card card : Card.values()) {
-                if (!card.equals(Card.NONE) && !card.equals(Card.BACK)) {
-                    cards.add(card);
-                }
-            }
-        }
-        long seed = System.nanoTime();
-        Collections.shuffle(cards, new Random(seed));
-        this.deck = new MyDeck(cards);
+        this.deck = new MyDeck();
         dealCards();
-        Card first = deck.drawACard();
-        Card second = deck.drawACard();
-        Pair pair = new MyPair(first, second);
-        players.add(players.size(), getCurrentPlayer());
-        players.remove(getCurrentPlayer());
-        getCurrentPlayer().startTurn(pair);
+        getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
         for (RailroadBaronsObserver observer : observers) {
             observer.turnStarted(this, getCurrentPlayer());
         }
@@ -151,17 +136,13 @@ public class LonleyEditionBarons implements RailroadBarons {
      */
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
-        for (Player player : players) {
+        for (Player player:players){
             player.reset();
         }
         this.map = map;
         this.deck = deck;
         dealCards();
-        players.add(players.size() - 1, getCurrentPlayer());
-        Card first = deck.drawACard();
-        Card second = deck.drawACard();
-        Pair pair = new MyPair(first, second);
-        getCurrentPlayer().startTurn(pair);
+        getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
         for (RailroadBaronsObserver observer : observers) {
             observer.turnStarted(this, getCurrentPlayer());
         }
