@@ -5,6 +5,7 @@ import model.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 /**
  * Represents a Railroad Barons map, which consists of empty
@@ -15,7 +16,8 @@ import java.util.List;
  */
 public class MyRailRoadMap implements RailroadMap {
     private Space[][] spaces;
-    private List<Station> stations;
+    private HashMap<Integer,MyStation> stations;
+    private int stationNum;
     private List<Route> routes;
     private List<RailroadMapObserver> observers;
     /**
@@ -24,13 +26,18 @@ public class MyRailRoadMap implements RailroadMap {
      */
     public MyRailRoadMap(List<Route> routes) {
         this.routes = routes;
-        this.stations=new ArrayList<>();
+        this.stations=new HashMap<>();
+        this.stationNum=0;
         for (Route route : routes) {
-            if (!stations.contains(route.getOrigin())) {
-                stations.add(route.getDestination());
+            MyStation origin=(MyStation)route.getOrigin();
+            MyStation destination=(MyStation)route.getDestination();
+            if (!stations.containsValue(origin)){
+                stations.put(stationNum,origin);
+                stationNum++;
             }
-            if (!stations.contains(route.getDestination())) {
-                stations.add(route.getDestination());
+            if (!stations.containsValue(destination)) {
+                stations.put(stationNum,destination);
+                stationNum++;
             }
         }
         spaces = new Space[this.getRows() + 1][this.getCols() + 1];
@@ -80,7 +87,7 @@ public class MyRailRoadMap implements RailroadMap {
     @Override
     public int getCols() {
         int result = 0;
-        for (Station s : stations) {
+        for (Station s : stations.values()) {
             if (s.getCol() > result) {
                 result = s.getCol();
             }
@@ -145,7 +152,7 @@ public class MyRailRoadMap implements RailroadMap {
     @Override
     public int getRows() {
         int result = 0;
-        for (Station s : stations) {
+        for (Station s : stations.values()) {
             if (s.getRow() > result) {
                 result = s.getRow();
             }
