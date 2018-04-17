@@ -4,7 +4,6 @@ import model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Random;
 /**
  * The interface for a class that represents a player in a
@@ -16,8 +15,7 @@ public class MyPlayer implements Player {
 
     private Baron baron;
     private int score;
-    private int routeNum=0;
-    private HashMap<Integer,Route> routes=new HashMap<>();
+    private ArrayList <Route> routes=new ArrayList<>();
     private ArrayList<PlayerObserver> observers = new ArrayList<>();
     private Pair pair;
     private ArrayList<Card> hand=new ArrayList<>();
@@ -264,8 +262,7 @@ public class MyPlayer implements Player {
             }
             claimedTurn = true;
             route.claim(baron);
-            routes.put(routeNum,route);
-            routeNum++;
+            routes.add(route);
             pieces-=route.getLength();
             score +=route.getPointValue();
             for (PlayerObserver p : observers) {
@@ -285,7 +282,7 @@ public class MyPlayer implements Player {
      */
     @Override
     public Collection<Route> getClaimedRoutes() {
-        return new ArrayList<>(routes.values());
+        return routes;
     }
     /**
      * Returns the players current score based on the

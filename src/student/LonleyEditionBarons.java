@@ -289,6 +289,11 @@ public class LonleyEditionBarons implements RailroadBarons {
         }
         return false;
     }
+
+    public RailroadMap getMap() {
+        return map;
+    }
+
 }
 
 
