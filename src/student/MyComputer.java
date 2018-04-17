@@ -4,15 +4,8 @@ import model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Random;
-/**
- * The interface for a class that represents a player in a
- * {@linkplain RailroadBarons Railroad Barons} game.
- * @Author Jacob Verdesi
- * @Author Andrew Yankowsky
- */
-public class MyPlayer implements Player {
 
+public class MyComputer implements Player{
     private Baron baron;
     private int score;
     private ArrayList<Route> routes=new ArrayList<>();
@@ -26,7 +19,7 @@ public class MyPlayer implements Player {
      * Creates a new player and initilize it
      * @param baron
      */
-    public MyPlayer(Baron baron){
+    public MyComputer(Baron baron){
         this.pieces = 45;
         this.baron = baron;
         claimedTurn = false;
@@ -159,9 +152,9 @@ public class MyPlayer implements Player {
         }
         for (Card card:Card.values()){
             if(!card.equals(Card.NONE)&&!card.equals(Card.BACK)&&!card.equals(Card.WILD)){
-               if (countCardsInHand(card)>=size){
-                   return true;
-               }
+                if (countCardsInHand(card)>=size){
+                    return true;
+                }
             }
         }
         return false;
@@ -208,7 +201,7 @@ public class MyPlayer implements Player {
                 }
             }
         }
-    return cards;
+        return cards;
     }
     /**
      * Returns true iff the following conditions are true:
@@ -255,7 +248,7 @@ public class MyPlayer implements Player {
      */
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
-      if(canClaimRoute(route)){
+        if(canClaimRoute(route)){
             ArrayList<Card> cardArrayList=getEnoughCards(route.getLength());
             for(Card card:cardArrayList){
                 hand.remove(card);
@@ -293,7 +286,6 @@ public class MyPlayer implements Player {
      */
     @Override
     public int getScore() {
-        if ()
         return score;
     }
     /**
