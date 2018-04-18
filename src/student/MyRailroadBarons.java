@@ -2,10 +2,8 @@ package student;
 
 import model.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
+
 /**
  * The interface for a Railroad Barons game. The main entry point into the
  * model for the entire game.
@@ -18,6 +16,7 @@ public class MyRailroadBarons implements RailroadBarons {
     private ArrayList<RailroadBaronsObserver> observers = new ArrayList<>();
     private Deck deck;
     private RailroadMap map;
+    public boolean gameEnd=false;
 
     /**
      * initilize the players
@@ -91,6 +90,7 @@ public class MyRailroadBarons implements RailroadBarons {
         this.map = map;
         this.deck = new MyDeck();
         dealCards();
+
         getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
         for (RailroadBaronsObserver observer : observers) {
             observer.turnStarted(this, getCurrentPlayer());
@@ -255,11 +255,14 @@ public class MyRailroadBarons implements RailroadBarons {
             }
         }
         if (unable || noPieces || claimedRoutes == 0) {
+            gameEnd=true;
             int highScore = 0;
             Player best = null;
             for (Player p : players) {
-                if (p.getScore() > highScore) {
-                    highScore = p.getScore();
+              int pScore=  calculateBonus((MyPlayer) p);
+                System.out.println(pScore);
+                if (p.getScore() +pScore> highScore) {
+                    highScore = p.getScore()+pScore;
                     best = p;
                 }
             }
@@ -269,5 +272,41 @@ public class MyRailroadBarons implements RailroadBarons {
             return true;
         }
         return false;
+    }
+    private ArrayList<Station> getBonusStart(){
+        ArrayList<Station> bonus=new ArrayList<>();
+        MyRailRoadMap myRailRoadMap=new MyRailRoadMap((List<Route>) map.getRoutes());
+        System.out.println(myRailRoadMap.getStations());
+        for (Station station:myRailRoadMap.getStations()){
+            if(station.getCol()==0||station.getRow()==0){
+                bonus.add(station);
+            }
+        }
+        System.out.println(bonus);
+        return bonus;
+    }
+    private ArrayList<Station> getBonusEnd(){
+        ArrayList<Station> bonus=new ArrayList<>();
+        MyRailRoadMap myRailRoadMap=new MyRailRoadMap((List<Route>) map.getRoutes());
+        for (Station station:myRailRoadMap.getStations()){
+            if(station.getCol()==myRailRoadMap.getCols()||station.getRow()==myRailRoadMap.getRows()){
+                bonus.add(station);
+            }
+        }
+
+        System.out.println(bonus);
+        return bonus;
+    }
+    public int calculateBonus(MyPlayer player){
+        int bonus=0;
+            for (Station start:getBonusStart()){
+                for (Station end:getBonusEnd()){
+                    System.out.println(start+" "+end);
+                    if(player.isConnectedBFS(start.getName(),end.getName())){
+                        bonus+=1000;
+                    }
+                }
+            }
+            return bonus;
     }
 }

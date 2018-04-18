@@ -16,8 +16,7 @@ import java.util.List;
  */
 public class MyRailRoadMap implements RailroadMap {
     private Space[][] spaces;
-    private HashMap<Integer,MyStation> stations;
-    private int stationNum;
+    private List<Station>stations;
     private List<Route> routes;
     private List<RailroadMapObserver> observers;
     /**
@@ -26,18 +25,15 @@ public class MyRailRoadMap implements RailroadMap {
      */
     public MyRailRoadMap(List<Route> routes) {
         this.routes = routes;
-        this.stations=new HashMap<>();
-        this.stationNum=0;
+        this.stations=new ArrayList<>();
         for (Route route : routes) {
-            MyStation origin=(MyStation)route.getOrigin();
-            MyStation destination=(MyStation)route.getDestination();
-            if (!stations.containsValue(origin)){
-                stations.put(stationNum,origin);
-                stationNum++;
+            Station origin=route.getOrigin();
+            Station destination=route.getDestination();
+            if (!stations.contains(origin)) {
+                stations.add(origin);
             }
-            if (!stations.containsValue(destination)) {
-                stations.put(stationNum,destination);
-                stationNum++;
+            if (!stations.contains(destination)) {
+                stations.add(destination);
             }
         }
         spaces = new Space[this.getRows() + 1][this.getCols() + 1];
@@ -51,7 +47,6 @@ public class MyRailRoadMap implements RailroadMap {
             }
         }
         observers = new ArrayList<>();
-
     }
     /**
      * Adds the specified {@linkplain RailroadMapObserver observer} to the
@@ -87,7 +82,7 @@ public class MyRailRoadMap implements RailroadMap {
     @Override
     public int getCols() {
         int result = 0;
-        for (Station s : stations.values()) {
+        for (Station s : stations) {
             if (s.getCol() > result) {
                 result = s.getCol();
             }
@@ -152,7 +147,7 @@ public class MyRailRoadMap implements RailroadMap {
     @Override
     public int getRows() {
         int result = 0;
-        for (Station s : stations.values()) {
+        for (Station s : stations) {
             if (s.getRow() > result) {
                 result = s.getRow();
             }
@@ -184,5 +179,9 @@ public class MyRailRoadMap implements RailroadMap {
         for (RailroadMapObserver o : observers) {
             o.routeClaimed(this, route);
         }
+    }
+
+    public List<Station>getStations() {
+        return stations;
     }
 }

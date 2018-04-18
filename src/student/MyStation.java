@@ -19,7 +19,7 @@ public class MyStation implements Station {
 
     private Space space;
     private String name;
-    private ArrayList<Station> neighbors;
+    private ArrayList<MyStation> neighbors;
 
     /**
      * creates a new station
@@ -33,13 +33,13 @@ public class MyStation implements Station {
         this.neighbors = new ArrayList<>();
     }
 
-    public void addNeighbor(Station n) {
+    public void addNeighbor(MyStation n) {
         if (!neighbors.contains(n)) {
             neighbors.add(n);
         }
     }
-    public Collection<Station> getNeighbors() {
-        return new LinkedList<>(neighbors);
+    public Collection<MyStation> getNeighbors() {
+        return neighbors;
     }
 
     /**
