@@ -28,7 +28,15 @@ public class MyComputer extends MyPlayer{
     @Override
     public void startTurn(Pair dealt) {
         super.startTurn(dealt);
-
+        for (Route r : game.getRailroadMap().getRoutes()) {
+            if (canClaimRoute(r)){
+                try {
+                    claimRoute(r);
+                }catch (RailroadBaronsException ex){
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
 }
