@@ -169,7 +169,7 @@ public class MyPlayer implements Player {
      * @param size
      * @return
      */
-    private boolean hasEnoughCards(int size) {
+    public boolean hasEnoughCards(int size) {
         if (countCardsInHand(Card.WILD) > 0) {
             size--;
         }
@@ -190,7 +190,7 @@ public class MyPlayer implements Player {
      * @param size
      * @return
      */
-    private ArrayList<Card> getEnoughCards(int size) {
+    public ArrayList<Card> getEnoughCards(int size) {
         ArrayList<Card> cards = new ArrayList<>();
         //see if enough without wild
         for (Card card : Card.values()) {

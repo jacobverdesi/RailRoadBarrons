@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 
-public class LonleyEditionBarons implements RailroadBarons {
+public class LonelyEditionBarons implements RailroadBarons {
 
     private ArrayList<Player> players = new ArrayList<>();
     private ArrayList<RailroadBaronsObserver> observers = new ArrayList<>();
@@ -29,7 +29,7 @@ public class LonleyEditionBarons implements RailroadBarons {
      * /**
      * initilize the players
      */
-    public LonleyEditionBarons() {
+    public LonelyEditionBarons() {
         players.add(new MyPlayer(Baron.BLUE));
         players.add(new MyComputer(Baron.RED));
         players.add(new MyComputer(Baron.YELLOW));
