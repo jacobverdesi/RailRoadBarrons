@@ -31,9 +31,9 @@ public class LonelyEditionBarons implements RailroadBarons {
      */
     public LonelyEditionBarons() {
         players.add(new MyPlayer(Baron.BLUE));
-        players.add(new MyComputer(Baron.RED));
-        players.add(new MyComputer(Baron.YELLOW));
-        players.add(new MyComputer(Baron.GREEN));
+        players.add(new MyComputer(Baron.RED, this));
+        players.add(new MyComputer(Baron.YELLOW, this));
+        players.add(new MyComputer(Baron.GREEN, this));
     }
 
     /**
