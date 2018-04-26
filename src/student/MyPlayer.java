@@ -61,6 +61,7 @@ public class MyPlayer implements Player {
         for(int i=0;i<20;i++) {
             hand.add(Card.BLACK);
         }
+        stations.clear();
         score = 0;
         routes.clear();
         pair = new MyPair(Card.NONE, Card.NONE);
@@ -281,6 +282,7 @@ public class MyPlayer implements Player {
             route.claim(baron);
             routes.add(route);
             addNode(route);
+            //System.out.println(stations.keySet());
             pieces -= route.getLength();
             score += route.getPointValue();
             for (PlayerObserver p : observers) {
@@ -334,9 +336,14 @@ public class MyPlayer implements Player {
      */
 
     public boolean isConnectedBFS(String start, String finish){
-        MyStation finishNode= stations.get(finish);
-        Set<MyStation> visited = visitBFS(start);
-        return visited.contains(finishNode);
+        if(stations.containsKey(start)&&stations.containsKey(finish)) {
+            System.out.println(stations.keySet());
+            System.out.println(start+","+finish);
+            MyStation finishNode = stations.get(finish);
+            Set<MyStation> visited = visitBFS(start);
+            return visited.contains(finishNode);
+        }
+        return false;
     }
     private Set<MyStation> visitBFS(String start) {
         MyStation startNode = stations.get(start);
@@ -344,9 +351,10 @@ public class MyPlayer implements Player {
         queue.add(startNode);
         Set<MyStation> visited = new HashSet<>();
         visited.add(startNode);
+        System.out.println(queue);
+        System.out.println(visited);
         while (!queue.isEmpty()) {
             MyStation curr = queue.remove(0);
-            System.out.println(curr.getNeighbors());
             for (MyStation nbr : curr.getNeighbors()) {
                 if (!visited.contains(nbr)) {
                     queue.add(nbr);
@@ -356,8 +364,11 @@ public class MyPlayer implements Player {
         }
         return visited;
     }
-    public void addScore(int addition){
-        score=score+addition;
+    public void addScore(int add){
+        score+=add;
+        for (PlayerObserver p : observers) {
+            p.playerChanged(this);
+        }
     }
     @Override
     public int getScore() {

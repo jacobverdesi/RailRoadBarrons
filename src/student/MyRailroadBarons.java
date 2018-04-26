@@ -258,11 +258,14 @@ public class MyRailroadBarons implements RailroadBarons {
             gameEnd=true;
             int highScore = 0;
             Player best = null;
+
             for (Player p : players) {
-              int pScore=  calculateBonus((MyPlayer) p);
-                System.out.println(pScore);
-                if (p.getScore() +pScore> highScore) {
-                    highScore = p.getScore()+pScore;
+                int pScore=  calculateBonus((MyPlayer) p);
+                ((MyPlayer) p).addScore(pScore);
+            }
+            for (Player p : players) {
+                if (p.getScore() > highScore) {
+                    highScore = p.getScore();
                     best = p;
                 }
             }
@@ -273,40 +276,72 @@ public class MyRailroadBarons implements RailroadBarons {
         }
         return false;
     }
-    private ArrayList<Station> getBonusStart(){
-        ArrayList<Station> bonus=new ArrayList<>();
+    private int getVBonus(MyPlayer player) {
+        int bonus=0;
         MyRailRoadMap myRailRoadMap=new MyRailRoadMap((List<Route>) map.getRoutes());
-        System.out.println(myRailRoadMap.getStations());
+        ArrayList<Station> start=new ArrayList<>();
+        ArrayList<Station> end=new ArrayList<>();
+        int startIndex=map.getCols();
+        int endIndex=0;
         for (Station station:myRailRoadMap.getStations()){
-            if(station.getCol()==0||station.getRow()==0){
-                bonus.add(station);
+            if(station.getCol()<startIndex){
+                startIndex=station.getCol();
+            }
+            if(station.getCol()>endIndex){
+                endIndex=station.getCol();
             }
         }
-        System.out.println(bonus);
+        for (Station station:myRailRoadMap.getStations()){
+            if(station.getCol()==startIndex){
+                start.add(station);
+            }
+            if(station.getCol()==endIndex){
+                end.add(station);
+            }
+        }
+        for (Station startStation:start){
+            for (Station endStation:end){
+                if(player.isConnectedBFS(startStation.getName(),endStation.getName())){
+                    return 1000;
+                }
+            }
+        }
         return bonus;
     }
-    private ArrayList<Station> getBonusEnd(){
-        ArrayList<Station> bonus=new ArrayList<>();
+    private int getHBonus(MyPlayer player){
+        int bonus=0;
         MyRailRoadMap myRailRoadMap=new MyRailRoadMap((List<Route>) map.getRoutes());
+        ArrayList<Station> start=new ArrayList<>();
+        ArrayList<Station> end=new ArrayList<>();
+        int startIndex=map.getRows();
+        int endIndex=0;
         for (Station station:myRailRoadMap.getStations()){
-            if(station.getCol()==myRailRoadMap.getCols()||station.getRow()==myRailRoadMap.getRows()){
-                bonus.add(station);
+            if(station.getRow()<startIndex){
+                startIndex=station.getRow();
+            }
+            if(station.getRow()>endIndex){
+                endIndex=station.getRow();
             }
         }
-
-        System.out.println(bonus);
+        for (Station station:myRailRoadMap.getStations()){
+            if(station.getRow()==startIndex){
+                start.add(station);
+            }
+            if(station.getRow()==endIndex){
+                end.add(station);
+            }
+        }
+        System.out.println(player);
+        for (Station startStation:start){
+            for (Station endStation:end){
+                if(player.isConnectedBFS(startStation.getName(),endStation.getName())){
+                    return 1000;
+                }
+            }
+        }
         return bonus;
     }
     public int calculateBonus(MyPlayer player){
-        int bonus=0;
-            for (Station start:getBonusStart()){
-                for (Station end:getBonusEnd()){
-                    System.out.println(start+" "+end);
-                    if(player.isConnectedBFS(start.getName(),end.getName())){
-                        bonus+=1000;
-                    }
-                }
-            }
-            return bonus;
+        return getHBonus(player)+getVBonus(player);
     }
 }
