@@ -90,7 +90,7 @@ public class MyRailroadBarons implements RailroadBarons {
         this.map = map;
         this.deck = new MyDeck();
         dealCards();
-
+        dealCards();
         getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
         for (RailroadBaronsObserver observer : observers) {
             observer.turnStarted(this, getCurrentPlayer());
@@ -100,7 +100,7 @@ public class MyRailroadBarons implements RailroadBarons {
     /**
      * deals 2 cards to players
      */
-    private void dealCards() {
+    public void dealCards() {
         for (Player player : players) {
             Card first = deck.drawACard();
             Card second = deck.drawACard();
@@ -130,6 +130,7 @@ public class MyRailroadBarons implements RailroadBarons {
         }
         this.map = map;
         this.deck = deck;
+        dealCards();
         dealCards();
         getCurrentPlayer().startTurn(new MyPair(deck.drawACard(),deck.drawACard()));
         for (RailroadBaronsObserver observer : observers) {
@@ -276,7 +277,7 @@ public class MyRailroadBarons implements RailroadBarons {
         }
         return false;
     }
-    private int getVBonus(MyPlayer player) {
+    public int getVBonus(MyPlayer player) {
         int bonus=0;
         MyRailRoadMap myRailRoadMap=new MyRailRoadMap((List<Route>) map.getRoutes());
         ArrayList<Station> start=new ArrayList<>();
@@ -308,7 +309,7 @@ public class MyRailroadBarons implements RailroadBarons {
         }
         return bonus;
     }
-    private int getHBonus(MyPlayer player){
+    public int getHBonus(MyPlayer player){
         int bonus=0;
         MyRailRoadMap myRailRoadMap=new MyRailRoadMap((List<Route>) map.getRoutes());
         ArrayList<Station> start=new ArrayList<>();
