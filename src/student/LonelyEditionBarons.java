@@ -100,8 +100,8 @@ public class LonelyEditionBarons extends MyRailroadBarons {
         }
         this.map = map;
         this.deck = new MyDeck();
-  //      dealCards();
-     //   dealCards();
+        dealCards();
+        dealCards();
         getCurrentPlayer().startTurn(new MyPair(deck.drawACard(), deck.drawACard()));
         for (RailroadBaronsObserver observer : observers) {
             observer.turnStarted(this, getCurrentPlayer());
@@ -142,8 +142,8 @@ public class LonelyEditionBarons extends MyRailroadBarons {
         }
         this.map = map;
         this.deck = deck;
-    //    dealCards();
-    //    dealCards();
+        dealCards();
+        dealCards();
         getCurrentPlayer().startTurn(new MyPair(deck.drawACard(), deck.drawACard()));
         for (RailroadBaronsObserver observer : observers) {
             observer.turnStarted(this, getCurrentPlayer());
@@ -218,163 +218,183 @@ public class LonelyEditionBarons extends MyRailroadBarons {
      */
     @Override
     public void endTurn() {
-        if(getCurrentPlayer().getBaron()==Baron.BLUE) {
             for (RailroadBaronsObserver o : observers) {
                 o.turnEnded(this, getCurrentPlayer());
             }
-        }
         players.add(players.size(), getCurrentPlayer());
         players.remove(getCurrentPlayer());
-        System.out.println(getCurrentPlayer());
         if (!gameIsOver()) {
-                if (deck.numberOfCardsRemaining() >= 2) {
-                    getCurrentPlayer().startTurn(new MyPair(deck.drawACard(), deck.drawACard()));
-                } else {
-                    getCurrentPlayer().startTurn(new MyPair(Card.NONE, Card.NONE));
+            if (deck.numberOfCardsRemaining() >= 2) {
+                getCurrentPlayer().startTurn(new MyPair(deck.drawACard(), deck.drawACard()));
+                if (getCurrentPlayer().getBaron() != Baron.BLUE) {
+                    ((MyComputer) getCurrentPlayer()).autoClaim();
                 }
-            if(getCurrentPlayer().getBaron()==Baron.BLUE) {
-                for (RailroadBaronsObserver o : observers) {
-                    o.turnStarted(this, getCurrentPlayer());
+            } else {
+                getCurrentPlayer().startTurn(new MyPair(Card.NONE, Card.NONE));
+                if (getCurrentPlayer().getBaron() != Baron.BLUE) {
+                    ((MyComputer) getCurrentPlayer()).autoClaim();
                 }
             }
-            }
-            }
-
-
-        /**
-         * Returns all of the {@linkplain Player players} currently playing the
-         * game.
-         *
-         * @return The {@link Player Players} currently playing the game.
-         */
-        @Override
-        public Collection<Player> getPlayers () {
-            return players;
         }
-
-        /**
-         * Indicates whether or not the game is over. This occurs when no more
-         * plays can be made. Reasons include:
-         * <ul>
-         * <li>No one player has enough pieces to claim a route.</li>
-         * <li>No one player has enough cards to claim a route.</li>
-         * <li>All routes have been claimed.</li>
-         * </ul>
-         *
-         * @return True if the game is over, false otherwise.
-         */
-        @Override
-        public boolean gameIsOver () {
-            boolean unable = false;
-            boolean noPieces = false;
-            for (Player p : players) {
-                if (!p.canContinuePlaying(map.getLengthOfShortestUnclaimedRoute()) && deck.numberOfCardsRemaining() == 0) {
-                    unable = true;
-                }
-                if (p.getNumberOfPieces() == 0) {
-                    noPieces = true;
-                }
-            }
-            int claimedRoutes = 0;
-            for (Route r : map.getRoutes()) {
-                if (r.getBaron().equals(Baron.UNCLAIMED)) {
-                    claimedRoutes++;
-                }
-            }
-            if (unable || noPieces || claimedRoutes == 0) {
-                gameEnd = true;
-                int highScore = 0;
-                Player best = null;
-
-                for (Player p : players) {
-                    int pScore = calculateBonus((MyPlayer) p);
-                    ((MyPlayer) p).addScore(pScore);
-                }
-                for (Player p : players) {
-                    if (p.getScore() > highScore) {
-                        highScore = p.getScore();
-                        best = p;
-                    }
-                }
-                for (RailroadBaronsObserver o : observers) {
-                    o.gameOver(this, best);
-                }
-                return true;
-            }
-            return false;
+        if (getCurrentPlayer().getBaron()==Baron.BLUE) {
+        for (RailroadBaronsObserver o : observers) {
+            o.turnStarted(this, getCurrentPlayer());
         }
-
-        public int getVBonus (MyPlayer player){
-            int bonus = 0;
-            MyRailRoadMap myRailRoadMap = new MyRailRoadMap((List<Route>) map.getRoutes());
-            ArrayList<Station> start = new ArrayList<>();
-            ArrayList<Station> end = new ArrayList<>();
-            int startIndex = map.getCols();
-            int endIndex = 0;
-            for (Station station : myRailRoadMap.getStations()) {
-                if (station.getCol() < startIndex) {
-                    startIndex = station.getCol();
-                }
-                if (station.getCol() > endIndex) {
-                    endIndex = station.getCol();
-                }
-            }
-            for (Station station : myRailRoadMap.getStations()) {
-                if (station.getCol() == startIndex) {
-                    start.add(station);
-                }
-                if (station.getCol() == endIndex) {
-                    end.add(station);
-                }
-            }
-            for (Station startStation : start) {
-                for (Station endStation : end) {
-                    if (player.isConnectedBFS(startStation.getName(), endStation.getName())) {
-                        return 1000;
-                    }
-                }
-            }
-            return bonus;
-        }
-
-        public int getHBonus (MyPlayer player){
-            int bonus = 0;
-            MyRailRoadMap myRailRoadMap = new MyRailRoadMap((List<Route>) map.getRoutes());
-            ArrayList<Station> start = new ArrayList<>();
-            ArrayList<Station> end = new ArrayList<>();
-            int startIndex = map.getRows();
-            int endIndex = 0;
-            for (Station station : myRailRoadMap.getStations()) {
-                if (station.getRow() < startIndex) {
-                    startIndex = station.getRow();
-                }
-                if (station.getRow() > endIndex) {
-                    endIndex = station.getRow();
-                }
-            }
-            for (Station station : myRailRoadMap.getStations()) {
-                if (station.getRow() == startIndex) {
-                    start.add(station);
-                }
-                if (station.getRow() == endIndex) {
-                    end.add(station);
-                }
-            }
-            System.out.println(player);
-            for (Station startStation : start) {
-                for (Station endStation : end) {
-                    if (player.isConnectedBFS(startStation.getName(), endStation.getName())) {
-                        return 1000;
-                    }
-                }
-            }
-            return bonus;
-        }
-
-        public int calculateBonus (MyPlayer player){
-            return getHBonus(player) + getVBonus(player);
-        }
+          }
     }
+
+
+    /**
+     * Returns all of the {@linkplain Player players} currently playing the
+     * game.
+     *
+     * @return The {@link Player Players} currently playing the game.
+     */
+    @Override
+    public Collection<Player> getPlayers() {
+        return players;
+    }
+
+    /**
+     * Indicates whether or not the game is over. This occurs when no more
+     * plays can be made. Reasons include:
+     * <ul>
+     * <li>No one player has enough pieces to claim a route.</li>
+     * <li>No one player has enough cards to claim a route.</li>
+     * <li>All routes have been claimed.</li>
+     * </ul>
+     *
+     * @return True if the game is over, false otherwise.
+     */
+    @Override
+    public boolean gameIsOver() {
+        boolean unable = false;
+        boolean noPieces = false;
+        for (Player p : players) {
+            if (!p.canContinuePlaying(map.getLengthOfShortestUnclaimedRoute()) && deck.numberOfCardsRemaining() == 0) {
+                unable = true;
+            }
+            if (p.getNumberOfPieces() == 0) {
+                noPieces = true;
+            }
+        }
+        int claimedRoutes = 0;
+        for (Route r : map.getRoutes()) {
+            if (r.getBaron().equals(Baron.UNCLAIMED)) {
+                claimedRoutes++;
+            }
+        }
+        if (unable || noPieces || claimedRoutes == 0) {
+            gameEnd = true;
+            int highScore = 0;
+            Player best = null;
+
+            for (Player p : players) {
+                int pScore;
+                pScore = calculateBonus(p);
+                if (p.getBaron() == Baron.BLUE) {
+                    ((MyPlayer) p).addScore(pScore);
+                } else {
+                    ((MyComputer) p).addScore(pScore);
+                }
+            }
+            for (Player p : players) {
+                if (p.getScore() > highScore) {
+                    highScore = p.getScore();
+                    best = p;
+                }
+            }
+            for (RailroadBaronsObserver o : observers) {
+                o.gameOver(this, best);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public int getVBonus(Player player) {
+        int bonus = 0;
+        MyRailRoadMap myRailRoadMap = new MyRailRoadMap((List<Route>) map.getRoutes());
+        ArrayList<Station> start = new ArrayList<>();
+        ArrayList<Station> end = new ArrayList<>();
+        int startIndex = map.getCols();
+        int endIndex = 0;
+        for (Station station : myRailRoadMap.getStations()) {
+            if (station.getCol() < startIndex) {
+                startIndex = station.getCol();
+            }
+            if (station.getCol() > endIndex) {
+                endIndex = station.getCol();
+            }
+        }
+        for (Station station : myRailRoadMap.getStations()) {
+            if (station.getCol() == startIndex) {
+                start.add(station);
+            }
+            if (station.getCol() == endIndex) {
+                end.add(station);
+            }
+        }
+        for (Station startStation : start) {
+            for (Station endStation : end) {
+                if (player.getBaron() == Baron.BLUE) {
+                    if (((MyPlayer) player).isConnectedBFS(startStation.getName(), endStation.getName())) {
+                        return 1000;
+                    }
+                } else {
+                    if (((MyComputer) player).isConnectedBFS(startStation.getName(), endStation.getName())) {
+                        return 1000;
+                    }
+                }
+
+            }
+        }
+        return bonus;
+    }
+
+    public int getHBonus(Player player) {
+        int bonus = 0;
+        MyRailRoadMap myRailRoadMap = new MyRailRoadMap((List<Route>) map.getRoutes());
+        ArrayList<Station> start = new ArrayList<>();
+        ArrayList<Station> end = new ArrayList<>();
+        int startIndex = map.getRows();
+        int endIndex = 0;
+        for (Station station : myRailRoadMap.getStations()) {
+            if (station.getRow() < startIndex) {
+                startIndex = station.getRow();
+            }
+            if (station.getRow() > endIndex) {
+                endIndex = station.getRow();
+            }
+        }
+        for (Station station : myRailRoadMap.getStations()) {
+            if (station.getRow() == startIndex) {
+                start.add(station);
+            }
+            if (station.getRow() == endIndex) {
+                end.add(station);
+            }
+        }
+        for (Station startStation : start) {
+            for (Station endStation : end) {
+                if (player.getBaron() == Baron.BLUE) {
+                    if (((MyPlayer) player).isConnectedBFS(startStation.getName(), endStation.getName())) {
+                        return 1000;
+                    }
+                } else {
+                    if (((MyComputer) player).isConnectedBFS(startStation.getName(), endStation.getName())) {
+                        return 1000;
+                    }
+                }
+            }
+        }
+        return bonus;
+    }
+
+    public int calculateBonus(Player player) {
+        return getHBonus(player) + getVBonus(player);
+    }
+}
 
 
 

@@ -58,9 +58,9 @@ public class MyPlayer implements Player {
     public void reset(Card... dealt) {
         this.pieces = 45;
         hand.clear();
-        for(int i=0;i<20;i++) {
-            hand.add(Card.BLACK);
-        }
+//        for(int i=0;i<20;i++) {
+//            hand.add(Card.BLACK);
+//        }
         stations.clear();
         score = 0;
         routes.clear();
@@ -118,8 +118,8 @@ public class MyPlayer implements Player {
                 p.playerChanged(this);
             }
         }
-
     }
+
 
     /**
      * Returns the most recently dealt {@linkplain Pair pair of cards}. Note
@@ -337,8 +337,8 @@ public class MyPlayer implements Player {
 
     public boolean isConnectedBFS(String start, String finish){
         if(stations.containsKey(start)&&stations.containsKey(finish)) {
-            System.out.println(stations.keySet());
-            System.out.println(start+","+finish);
+//            System.out.println(stations.keySet());
+//            System.out.println(start+","+finish);
             MyStation finishNode = stations.get(finish);
             Set<MyStation> visited = visitBFS(start);
             return visited.contains(finishNode);
@@ -351,8 +351,8 @@ public class MyPlayer implements Player {
         queue.add(startNode);
         Set<MyStation> visited = new HashSet<>();
         visited.add(startNode);
-        System.out.println(queue);
-        System.out.println(visited);
+//        System.out.println(queue);
+//        System.out.println(visited);
         while (!queue.isEmpty()) {
             MyStation curr = queue.remove(0);
             for (MyStation nbr : curr.getNeighbors()) {

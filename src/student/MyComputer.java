@@ -4,7 +4,7 @@ import model.*;
 
 import java.util.*;
 
-public class MyComputer implements Player{
+public class MyComputer implements Player {
     private Baron baron;
     private int score;
     private ArrayList<Route> routes = new ArrayList<>();
@@ -15,15 +15,16 @@ public class MyComputer implements Player{
     private int pieces;
     private boolean claimedTurn;
     private LonelyEditionBarons game;
+
     /**
      * Creates a new player and initilize it
+     *
      * @param baron
      */
 
-    public MyComputer(Baron baron,LonelyEditionBarons game) {
-        //TODO bug maybe when reading a file that contains saved file doesnt add routes
+    public MyComputer(Baron baron, LonelyEditionBarons game) {
         this.pieces = 45;
-        this.game=game;
+        this.game = game;
         this.baron = baron;
         claimedTurn = false;
         stations = new HashMap<>();
@@ -51,9 +52,9 @@ public class MyComputer implements Player{
     public void reset(Card... dealt) {
         this.pieces = 45;
         hand.clear();
-        for(int i=0;i<20;i++) {
-            hand.add(Card.BLACK);
-        }
+//        for(int i=0;i<20;i++) {
+//            hand.add(Card.BLACK);
+//        }
         stations.clear();
         score = 0;
         routes.clear();
@@ -98,11 +99,10 @@ public class MyComputer implements Player{
      * {@linkplain Route route} on the {@linkplain RailroadMap map}.
      *
      * @param dealt a {@linkplain Pair pair of cards} to the player. Note that
-     * one or both of these cards may have a value of {@link Card#NONE}.
+     *              one or both of these cards may have a value of {@link Card#NONE}.
      */
     @Override
     public void startTurn(Pair dealt) {
-        System.out.println("test");
         claimedTurn = false;
         this.pair = dealt;
         if (dealt.getFirstCard() != Card.NONE && dealt.getSecondCard() != Card.NONE) {
@@ -112,18 +112,21 @@ public class MyComputer implements Player{
                 p.playerChanged(this);
             }
         }
+    }
+    public void autoClaim(){
         for (Route r : game.getRailroadMap().getRoutes()) {
-            if(r.getBaron()==Baron.UNCLAIMED){
-            try {
-                game.claimRoute(r.getTracks().get(0).getRow(),r.getTracks().get(0).getCol());
+            if (r.getBaron() == Baron.UNCLAIMED && canClaimRoute(r)) {
+                try {
+                    game.claimRoute(r.getTracks().get(0).getRow(), r.getTracks().get(0).getCol());
+                    break;
+                } catch (RailroadBaronsException ex) {
+                    System.out.println(ex);
+                }
             }
-            catch (RailroadBaronsException ex){
-            }
         }
-        }
-        for (PlayerObserver p : observers) {
-            p.playerChanged(this);
-        }
+//        for (PlayerObserver p : observers) {
+//            p.playerChanged(this);
+//        }
     }
 
     /**
@@ -287,7 +290,6 @@ public class MyComputer implements Player{
             route.claim(baron);
             routes.add(route);
             addNode(route);
-            System.out.println(route);
             pieces -= route.getLength();
             score += route.getPointValue();
             for (PlayerObserver p : observers) {
@@ -340,24 +342,21 @@ public class MyComputer implements Player{
      * @return The player's current score.
      */
 
-    public boolean isConnectedBFS(String start, String finish){
-        if(stations.containsKey(start)&&stations.containsKey(finish)) {
-            System.out.println(stations.keySet());
-            System.out.println(start+","+finish);
+    public boolean isConnectedBFS(String start, String finish) {
+        if (stations.containsKey(start) && stations.containsKey(finish)) {
             MyStation finishNode = stations.get(finish);
             Set<MyStation> visited = visitBFS(start);
             return visited.contains(finishNode);
         }
         return false;
     }
+
     private Set<MyStation> visitBFS(String start) {
         MyStation startNode = stations.get(start);
         List<MyStation> queue = new LinkedList<>();
         queue.add(startNode);
         Set<MyStation> visited = new HashSet<>();
         visited.add(startNode);
-        System.out.println(queue);
-        System.out.println(visited);
         while (!queue.isEmpty()) {
             MyStation curr = queue.remove(0);
             for (MyStation nbr : curr.getNeighbors()) {
@@ -369,12 +368,14 @@ public class MyComputer implements Player{
         }
         return visited;
     }
-    public void addScore(int add){
-        score+=add;
+
+    public void addScore(int add) {
+        score += add;
         for (PlayerObserver p : observers) {
             p.playerChanged(this);
         }
     }
+
     @Override
     public int getScore() {
         //Todo figure out how to put if endof game
@@ -411,8 +412,6 @@ public class MyComputer implements Player{
     public String toString() {
         return baron + " Computer";
     }
-
-
 
 
 }
