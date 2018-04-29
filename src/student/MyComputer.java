@@ -18,7 +18,6 @@ public class MyComputer implements Player {
 
     /**
      * Creates a new player and initilize it
-     *
      * @param baron
      */
 
@@ -378,7 +377,6 @@ public class MyComputer implements Player {
 
     @Override
     public int getScore() {
-        //Todo figure out how to put if endof game
         return score;
     }
 
