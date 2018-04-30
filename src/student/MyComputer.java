@@ -18,6 +18,7 @@ public class MyComputer implements Player {
 
     /**
      * Creates a new player and initilize it
+     *
      * @param baron
      */
 
@@ -51,9 +52,9 @@ public class MyComputer implements Player {
     public void reset(Card... dealt) {
         this.pieces = 45;
         hand.clear();
-//        for(int i=0;i<20;i++) {
-//            hand.add(Card.BLACK);
-//        }
+        for(int i=0;i<20;i++) {
+            hand.add(Card.BLACK);
+        }
         stations.clear();
         score = 0;
         routes.clear();
@@ -107,25 +108,40 @@ public class MyComputer implements Player {
         if (dealt.getFirstCard() != Card.NONE && dealt.getSecondCard() != Card.NONE) {
             this.hand.add(pair.getFirstCard());
             this.hand.add(pair.getSecondCard());
-            for (PlayerObserver p : observers) {
-                p.playerChanged(this);
-            }
+
+        }
+        for (PlayerObserver p : observers) {
+            p.playerChanged(this);
         }
     }
-    public void autoClaim(){
-        for (Route r : game.getRailroadMap().getRoutes()) {
-            if (r.getBaron() == Baron.UNCLAIMED && canClaimRoute(r)) {
-                try {
-                    game.claimRoute(r.getTracks().get(0).getRow(), r.getTracks().get(0).getCol());
-                    break;
-                } catch (RailroadBaronsException ex) {
-                    System.out.println(ex);
-                }
+
+    public void autoClaim() {
+        int max = ((MyRailRoadMap) game.getRailroadMap()).getLengthOfLongestUnclaimedRoute();
+        if (getNumberOfPieces() < max) {
+            max = getNumberOfPieces();
+        }
+        if ((pair.getFirstCard().equals(Card.NONE) || pair.getSecondCard().equals(Card.NONE)) &&
+                !hasEnoughCards(max)) {
+            while (!hasEnoughCards(max)){
+                max--;
             }
         }
-//        for (PlayerObserver p : observers) {
-//            p.playerChanged(this);
-//        }
+        for (Route r : game.getRailroadMap().getRoutes()) {
+            if (r.getBaron() == Baron.UNCLAIMED && canClaimRoute(r)) {
+
+                if (r.getLength() == max) {
+                    try {
+                        game.claimRoute(r.getTracks().get(0).getRow(), r.getTracks().get(0).getCol());
+                        break;
+                    } catch (RailroadBaronsException ex) {
+                        System.out.println(ex);
+                    }
+                }
+
+
+            }
+        }
+
     }
 
     /**
@@ -178,7 +194,7 @@ public class MyComputer implements Player {
      * @return
      */
     public boolean hasEnoughCards(int size) {
-        if (countCardsInHand(Card.WILD) > 0) {
+        if (countCardsInHand(Card.WILD) > 0&& size>1) {
             size--;
         }
         for (Card card : Card.values()) {

@@ -10,7 +10,7 @@ public class LonelyEditionBarons extends MyRailroadBarons {
     private ArrayList<RailroadBaronsObserver> observers = new ArrayList<>();
     private Deck deck;
     private RailroadMap map;
-    public boolean gameEnd = false;
+    public boolean gameEnd;
 
     /**
      * The interface for a Railroad Barons game. The main entry point into the
@@ -98,6 +98,12 @@ public class LonelyEditionBarons extends MyRailroadBarons {
         for (Player player : players) {
             player.reset();
         }
+        while (getCurrentPlayer().getBaron()!=Baron.BLUE){
+            players.add(players.size(), getCurrentPlayer());
+            players.remove(getCurrentPlayer());
+        }
+
+        gameEnd=false;
         this.map = map;
         this.deck = new MyDeck();
         dealCards();
@@ -140,6 +146,7 @@ public class LonelyEditionBarons extends MyRailroadBarons {
         for (Player player : players) {
             player.reset();
         }
+        gameEnd=false;
         this.map = map;
         this.deck = deck;
         dealCards();
@@ -205,9 +212,9 @@ public class LonelyEditionBarons extends MyRailroadBarons {
             map.getRoute(row, col).claim(getCurrentPlayer().getBaron());
             map.routeClaimed(map.getRoute(row, col));
             getCurrentPlayer().claimRoute(map.getRoute(row, col));
-            for (RailroadBaronsObserver observer : observers) {
-                observer.turnStarted(this, getCurrentPlayer());
-            }
+//            for (RailroadBaronsObserver observer : observers) {
+//                observer.turnStarted(this, getCurrentPlayer());
+//            }
         } else {
             throw new RailroadBaronsException("Cannot claim route");
         }
@@ -218,29 +225,35 @@ public class LonelyEditionBarons extends MyRailroadBarons {
      */
     @Override
     public void endTurn() {
+        if (!gameIsOver()&&!gameEnd) {
             for (RailroadBaronsObserver o : observers) {
                 o.turnEnded(this, getCurrentPlayer());
             }
-        players.add(players.size(), getCurrentPlayer());
-        players.remove(getCurrentPlayer());
-        if (!gameIsOver()) {
+            players.add(players.size(), getCurrentPlayer());
+            players.remove(getCurrentPlayer());
+
+
             if (deck.numberOfCardsRemaining() >= 2) {
                 getCurrentPlayer().startTurn(new MyPair(deck.drawACard(), deck.drawACard()));
                 if (getCurrentPlayer().getBaron() != Baron.BLUE) {
                     ((MyComputer) getCurrentPlayer()).autoClaim();
+                    endTurn();
                 }
             } else {
                 getCurrentPlayer().startTurn(new MyPair(Card.NONE, Card.NONE));
                 if (getCurrentPlayer().getBaron() != Baron.BLUE) {
                     ((MyComputer) getCurrentPlayer()).autoClaim();
+                    endTurn();
+                }
+            }
+            Player curr=getCurrentPlayer();
+            if (curr.getBaron() == Baron.BLUE) {
+                for (RailroadBaronsObserver o : observers) {
+                    o.turnStarted(this, curr);
                 }
             }
         }
-        if (getCurrentPlayer().getBaron()==Baron.BLUE) {
-        for (RailroadBaronsObserver o : observers) {
-            o.turnStarted(this, getCurrentPlayer());
-        }
-          }
+
     }
 
 

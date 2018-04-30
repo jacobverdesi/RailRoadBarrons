@@ -105,6 +105,15 @@ public class MyRailRoadMap implements RailroadMap {
         }
         return result;
     }
+    public int getLengthOfLongestUnclaimedRoute() {
+        int result = 0;
+        for (Route r : routes) {
+            if (r.getLength() > result&&r.claim(Baron.UNCLAIMED)) {
+                result = r.getLength();
+            }
+        }
+        return result;
+    }
     /**
      * Returns the {@linkplain Route route} that contains the
      * {@link Track track} at the specified location (if such a route exists}.

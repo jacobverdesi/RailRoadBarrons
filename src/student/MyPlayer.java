@@ -114,9 +114,9 @@ public class MyPlayer implements Player {
         if (dealt.getFirstCard() != Card.NONE && dealt.getSecondCard() != Card.NONE) {
             this.hand.add(pair.getFirstCard());
             this.hand.add(pair.getSecondCard());
-            for (PlayerObserver p : observers) {
-                p.playerChanged(this);
-            }
+        }
+        for (PlayerObserver p : observers) {
+            p.playerChanged(this);
         }
     }
 
