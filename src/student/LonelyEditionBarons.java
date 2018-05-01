@@ -10,7 +10,7 @@ public class LonelyEditionBarons extends MyRailroadBarons {
     private ArrayList<RailroadBaronsObserver> observers = new ArrayList<>();
     private Deck deck;
     private RailroadMap map;
-    public boolean gameEnd;
+    private  boolean gameEnd;
 
     /**
      * The interface for a Railroad Barons game. The main entry point into the
@@ -33,7 +33,6 @@ public class LonelyEditionBarons extends MyRailroadBarons {
         players.add(new MyComputer(Baron.RED, this));
         players.add(new MyComputer(Baron.YELLOW, this));
         players.add(new MyComputer(Baron.GREEN, this));
-        System.out.println(players);
     }
 
     /**
@@ -146,6 +145,10 @@ public class LonelyEditionBarons extends MyRailroadBarons {
         for (Player player : players) {
             player.reset();
         }
+        while (getCurrentPlayer().getBaron()!=Baron.BLUE){
+            players.add(players.size(), getCurrentPlayer());
+            players.remove(getCurrentPlayer());
+        }
         gameEnd=false;
         this.map = map;
         this.deck = deck;
@@ -212,9 +215,6 @@ public class LonelyEditionBarons extends MyRailroadBarons {
             map.getRoute(row, col).claim(getCurrentPlayer().getBaron());
             map.routeClaimed(map.getRoute(row, col));
             getCurrentPlayer().claimRoute(map.getRoute(row, col));
-//            for (RailroadBaronsObserver observer : observers) {
-//                observer.turnStarted(this, getCurrentPlayer());
-//            }
         } else {
             throw new RailroadBaronsException("Cannot claim route");
         }
@@ -229,10 +229,11 @@ public class LonelyEditionBarons extends MyRailroadBarons {
             for (RailroadBaronsObserver o : observers) {
                 o.turnEnded(this, getCurrentPlayer());
             }
+
             players.add(players.size(), getCurrentPlayer());
             players.remove(getCurrentPlayer());
 
-
+            Player curr=getCurrentPlayer();
             if (deck.numberOfCardsRemaining() >= 2) {
                 getCurrentPlayer().startTurn(new MyPair(deck.drawACard(), deck.drawACard()));
                 if (getCurrentPlayer().getBaron() != Baron.BLUE) {
@@ -246,10 +247,9 @@ public class LonelyEditionBarons extends MyRailroadBarons {
                     endTurn();
                 }
             }
-            Player curr=getCurrentPlayer();
-            if (curr.getBaron() == Baron.BLUE) {
+            if (curr.getBaron() == Baron.BLUE ) {
                 for (RailroadBaronsObserver o : observers) {
-                    o.turnStarted(this, curr);
+                    o.turnStarted(this, getCurrentPlayer());
                 }
             }
         }
@@ -325,7 +325,7 @@ public class LonelyEditionBarons extends MyRailroadBarons {
         return false;
     }
 
-    public int getVBonus(Player player) {
+    private int getVBonus(Player player) {
         int bonus = 0;
         MyRailRoadMap myRailRoadMap = new MyRailRoadMap((List<Route>) map.getRoutes());
         ArrayList<Station> start = new ArrayList<>();
@@ -348,15 +348,16 @@ public class LonelyEditionBarons extends MyRailroadBarons {
                 end.add(station);
             }
         }
+        int score=(endIndex+1-startIndex)*5;
         for (Station startStation : start) {
             for (Station endStation : end) {
                 if (player.getBaron() == Baron.BLUE) {
                     if (((MyPlayer) player).isConnectedBFS(startStation.getName(), endStation.getName())) {
-                        return 1000;
+                        return score;
                     }
                 } else {
                     if (((MyComputer) player).isConnectedBFS(startStation.getName(), endStation.getName())) {
-                        return 1000;
+                        return score;
                     }
                 }
 
@@ -365,7 +366,7 @@ public class LonelyEditionBarons extends MyRailroadBarons {
         return bonus;
     }
 
-    public int getHBonus(Player player) {
+    private int getHBonus(Player player) {
         int bonus = 0;
         MyRailRoadMap myRailRoadMap = new MyRailRoadMap((List<Route>) map.getRoutes());
         ArrayList<Station> start = new ArrayList<>();
@@ -388,15 +389,16 @@ public class LonelyEditionBarons extends MyRailroadBarons {
                 end.add(station);
             }
         }
+        int score=(endIndex+1-startIndex)*5;
         for (Station startStation : start) {
             for (Station endStation : end) {
                 if (player.getBaron() == Baron.BLUE) {
                     if (((MyPlayer) player).isConnectedBFS(startStation.getName(), endStation.getName())) {
-                        return 1000;
+                        return score;
                     }
                 } else {
                     if (((MyComputer) player).isConnectedBFS(startStation.getName(), endStation.getName())) {
-                        return 1000;
+                        return score;
                     }
                 }
             }
@@ -404,7 +406,7 @@ public class LonelyEditionBarons extends MyRailroadBarons {
         return bonus;
     }
 
-    public int calculateBonus(Player player) {
+    private int calculateBonus(Player player) {
         return getHBonus(player) + getVBonus(player);
     }
 }

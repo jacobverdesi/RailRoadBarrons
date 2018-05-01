@@ -16,7 +16,7 @@ public class MyRailroadBarons implements RailroadBarons {
     private ArrayList<RailroadBaronsObserver> observers = new ArrayList<>();
     private Deck deck;
     private RailroadMap map;
-    public boolean gameEnd=false;
+    private boolean gameEnd=false;
 
     /**
      * initilize the players
@@ -277,7 +277,7 @@ public class MyRailroadBarons implements RailroadBarons {
         }
         return false;
     }
-    public int getVBonus(MyPlayer player) {
+    private int getVBonus(MyPlayer player) {
         int bonus=0;
         MyRailRoadMap myRailRoadMap=new MyRailRoadMap((List<Route>) map.getRoutes());
         ArrayList<Station> start=new ArrayList<>();
@@ -300,16 +300,17 @@ public class MyRailroadBarons implements RailroadBarons {
                 end.add(station);
             }
         }
+        int score=(endIndex+1-startIndex)*5;
         for (Station startStation:start){
             for (Station endStation:end){
                 if(player.isConnectedBFS(startStation.getName(),endStation.getName())){
-                    return 1000;
+                    return score;
                 }
             }
         }
         return bonus;
     }
-    public int getHBonus(MyPlayer player){
+    private int getHBonus(MyPlayer player){
         int bonus=0;
         MyRailRoadMap myRailRoadMap=new MyRailRoadMap((List<Route>) map.getRoutes());
         ArrayList<Station> start=new ArrayList<>();
@@ -332,17 +333,17 @@ public class MyRailroadBarons implements RailroadBarons {
                 end.add(station);
             }
         }
-        System.out.println(player);
+        int score=(endIndex+1-startIndex)*5;
         for (Station startStation:start){
             for (Station endStation:end){
                 if(player.isConnectedBFS(startStation.getName(),endStation.getName())){
-                    return 1000;
+                    return score;
                 }
             }
         }
         return bonus;
     }
-    public int calculateBonus(MyPlayer player){
+    private int calculateBonus(MyPlayer player){
         return getHBonus(player)+getVBonus(player);
     }
 }

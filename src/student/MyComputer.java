@@ -52,13 +52,16 @@ public class MyComputer implements Player {
     public void reset(Card... dealt) {
         this.pieces = 45;
         hand.clear();
-        for(int i=0;i<20;i++) {
-            hand.add(Card.BLACK);
-        }
+//        for(int i=0;i<20;i++) {
+//            hand.add(Card.BLACK);
+//        }
         stations.clear();
         score = 0;
         routes.clear();
         pair = new MyPair(Card.NONE, Card.NONE);
+        for (PlayerObserver p : observers) {
+            p.playerChanged(this);
+        }
     }
 
     /**
@@ -105,6 +108,7 @@ public class MyComputer implements Player {
     public void startTurn(Pair dealt) {
         claimedTurn = false;
         this.pair = dealt;
+
         if (dealt.getFirstCard() != Card.NONE && dealt.getSecondCard() != Card.NONE) {
             this.hand.add(pair.getFirstCard());
             this.hand.add(pair.getSecondCard());
@@ -122,7 +126,7 @@ public class MyComputer implements Player {
         }
         if ((pair.getFirstCard().equals(Card.NONE) || pair.getSecondCard().equals(Card.NONE)) &&
                 !hasEnoughCards(max)) {
-            while (!hasEnoughCards(max)){
+            while (!hasEnoughCards(max)) {
                 max--;
             }
         }
@@ -193,8 +197,8 @@ public class MyComputer implements Player {
      * @param size
      * @return
      */
-    public boolean hasEnoughCards(int size) {
-        if (countCardsInHand(Card.WILD) > 0&& size>1) {
+   private boolean hasEnoughCards(int size) {
+        if (countCardsInHand(Card.WILD) > 0 && size > 1) {
             size--;
         }
         for (Card card : Card.values()) {
@@ -214,7 +218,7 @@ public class MyComputer implements Player {
      * @param size
      * @return
      */
-    public ArrayList<Card> getEnoughCards(int size) {
+    private ArrayList<Card> getEnoughCards(int size) {
         ArrayList<Card> cards = new ArrayList<>();
         //see if enough without wild
         for (Card card : Card.values()) {
@@ -360,28 +364,61 @@ public class MyComputer implements Player {
     public boolean isConnectedBFS(String start, String finish) {
         if (stations.containsKey(start) && stations.containsKey(finish)) {
             MyStation finishNode = stations.get(finish);
-            Set<MyStation> visited = visitBFS(start);
-            return visited.contains(finishNode);
+            Map<MyStation, MyStation> pred = pathBFS(start);
+           // List<MyStation> buildPath = buildPathBFS(stations, start, finish);
+            return pred.containsKey(finishNode);
         }
         return false;
     }
 
-    private Set<MyStation> visitBFS(String start) {
+    private Map<MyStation, MyStation> pathBFS(String start) {
         MyStation startNode = stations.get(start);
         List<MyStation> queue = new LinkedList<>();
         queue.add(startNode);
-        Set<MyStation> visited = new HashSet<>();
-        visited.add(startNode);
+        Map<MyStation, MyStation> visited = new HashMap<>();
+        //   visited.add(startNode);
         while (!queue.isEmpty()) {
             MyStation curr = queue.remove(0);
             for (MyStation nbr : curr.getNeighbors()) {
-                if (!visited.contains(nbr)) {
+                if (!visited.containsKey(nbr)) {
                     queue.add(nbr);
-                    visited.add(nbr);
+                    visited.put(nbr, curr);
                 }
             }
         }
         return visited;
+    }
+
+    public static List<MyStation> buildPathBFS(Map<MyStation, MyStation> graph, String start, String finish) {
+        Map<MyStation, MyStation> predecessor = new HashMap<>();
+        MyStation startNode, finishNode;
+        startNode = graph.get(start);
+        finishNode = graph.get(finish);
+        predecessor.put(startNode, null);
+        Queue<MyStation> toVisit = new LinkedList<>();
+        toVisit.offer(startNode);
+
+        while (!toVisit.isEmpty() && !toVisit.peek().equals(finishNode)) {
+            MyStation thisNode = toVisit.remove();
+            thisNode.getNeighbors().forEach(nbr -> {
+                if (!predecessor.containsKey(nbr)) {
+                    predecessor.put(nbr, thisNode);
+                    toVisit.offer(nbr);
+                }
+            });
+        }
+        if (toVisit.isEmpty()) {
+            return null;
+        } else {
+            List<MyStation> path = new LinkedList<>();
+            path.add(0, finishNode);
+            MyStation node = predecessor.get(finishNode);
+            while (node != null) {
+                path.add(0, node); // Reverse the direction to start->finish
+                node = predecessor.get(node);
+            }
+            return path;
+        }
     }
 
     public void addScore(int add) {

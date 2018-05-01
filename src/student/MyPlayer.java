@@ -29,7 +29,6 @@ public class MyPlayer implements Player {
      * @param baron
      */
     public MyPlayer(Baron baron) {
-        //TODO bug maybe when reading a file that contains saved file doesnt add routes
         this.pieces = 45;
         this.baron = baron;
         claimedTurn = false;
@@ -65,6 +64,9 @@ public class MyPlayer implements Player {
         score = 0;
         routes.clear();
         pair = new MyPair(Card.NONE, Card.NONE);
+        for (PlayerObserver p : observers) {
+            p.playerChanged(this);
+        }
     }
 
     /**
@@ -170,8 +172,8 @@ public class MyPlayer implements Player {
      * @param size
      * @return
      */
-    public boolean hasEnoughCards(int size) {
-        if (countCardsInHand(Card.WILD) > 0) {
+    private boolean hasEnoughCards(int size) {
+        if (countCardsInHand(Card.WILD) > 0&& size > 1) {
             size--;
         }
         for (Card card : Card.values()) {
@@ -191,7 +193,7 @@ public class MyPlayer implements Player {
      * @param size
      * @return
      */
-    public ArrayList<Card> getEnoughCards(int size) {
+    private  ArrayList<Card> getEnoughCards(int size) {
         ArrayList<Card> cards = new ArrayList<>();
         //see if enough without wild
         for (Card card : Card.values()) {
@@ -372,7 +374,6 @@ public class MyPlayer implements Player {
     }
     @Override
     public int getScore() {
-        //Todo figure out how to put if endof game
         return score;
     }
 
