@@ -7,6 +7,7 @@ import java.util.*;
 /**
  * The interface for a Railroad Barons game. The main entry point into the
  * model for the entire game.
+ *
  * @Author Jacob Verdesi
  * @Author Andrew Yankowsky
  */
