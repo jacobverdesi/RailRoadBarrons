@@ -121,8 +121,6 @@ public class MyPlayer implements Player {
             p.playerChanged(this);
         }
     }
-
-
     /**
      * Returns the most recently dealt {@linkplain Pair pair of cards}. Note
      * that one or both of the {@linkplain Card cards} may have a value of
@@ -168,7 +166,6 @@ public class MyPlayer implements Player {
 
     /**
      * gets if there are enough cards to play
-     *
      * @param size
      * @return
      */

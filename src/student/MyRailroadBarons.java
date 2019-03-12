@@ -96,7 +96,6 @@ public class MyRailroadBarons implements RailroadBarons {
             observer.turnStarted(this, getCurrentPlayer());
         }
     }
-
     /**
      * deals 2 cards to players
      */
